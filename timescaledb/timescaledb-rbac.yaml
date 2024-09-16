@@ -1,0 +1,24 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: databases
+  name: timescale-patch
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["services"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: timescale-patch-binding
+  namespace: databases
+subjects:
+- kind: ServiceAccount
+  name: timescaledb
+  namespace: databases
+roleRef:
+  kind: Role 
+  name: timescale-patch
+  apiGroup: rbac.authorization.k8s.io
