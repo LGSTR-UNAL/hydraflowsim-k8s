@@ -1,0 +1,132 @@
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: confluent-jdbc-postgres-sink-connector-linet
+  labels:
+    strimzi.io/cluster: kafka-connect
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: 2
+  autoRestart:
+    enabled: true
+  config:
+    topics: core.nowcasting.linet-flashes
+    table.name.format: ${topic}
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    auto.create: "true"
+    auto.evolve: "true"
+    connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/core"
+    connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:username}"
+    connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
+    transforms: timestamp
+    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+    transforms.timestamp.target.type: Timestamp
+    transforms.timestamp.field: fecha
+    transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: confluent-jdbc-postgres-sink-connector-glm-flashes
+  labels:
+    strimzi.io/cluster: kafka-connect
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: 2
+  autoRestart:
+    enabled: true
+  config:
+    topics: core.nowcasting.glm-flashes
+    table.name.format: ${topic}
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    auto.create: "true"
+    auto.evolve: "true"
+    connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/core"
+    connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:username}"
+    connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
+    transforms: timestamp
+    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+    transforms.timestamp.target.type: Timestamp
+    transforms.timestamp.field: fecha
+    transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
+# ---
+# apiVersion: kafka.strimzi.io/v1beta2
+# kind: KafkaConnector
+# metadata:
+#   name: confluent-jdbc-postgres-sink-connector-glm-events
+#   labels:
+#     strimzi.io/cluster: kafka-connect
+# spec:
+#   class: io.confluent.connect.jdbc.JdbcSinkConnector
+#   tasksMax: 2
+#   autoRestart:
+#     enabled: true
+#   config:
+#     topics: core.nowcasting.glm-events
+#     table.name.format: ${topic}
+#     value.converter: org.apache.kafka.connect.json.JsonConverter
+#     auto.create: "true"
+#     auto.evolve: "true"
+#     connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/core"
+#     connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:username}"
+#     connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
+#     transforms: timestamp
+#     transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+#     transforms.timestamp.target.type: Timestamp
+#     transforms.timestamp.field: fecha
+#     transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSSSSS
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: ideam-wrf-confluent-jdbc-postgres-sink-connector
+  labels:
+    strimzi.io/cluster: kafka-connect
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: 2
+  autoRestart:
+    enabled: true
+  config:
+    topics: core.forecasting.ideam-wrf
+    table.name.format: ${topic}
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    auto.create: "true"
+    auto.evolve: "true"
+    connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/core"
+    connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:username}"
+    connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
+    transforms: timestamp
+    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+    transforms.timestamp.target.type: Timestamp
+    transforms.timestamp.field: fecha
+    transforms.timestamp.format: yyyy-MM-dd HH:mm:ssXXX
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: confluent-jdbc-postgres-sink-connector-events
+  labels:
+    strimzi.io/cluster: kafka-connect
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: 1
+  autoRestart:
+    enabled: true
+  config:
+    topics: core.streaming.downstream
+    table.name.format: ${topic}
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    auto.create: "true"
+    auto.evolve: "true"
+    connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/core"
+    connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:username}"
+    connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
+    transforms: dropcolumn, timestamp
+    transforms.dropcolumn.type: org.apache.kafka.connect.transforms.ReplaceField$Value
+    transforms.dropcolumn.blacklist: json_data
+    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+    transforms.timestamp.target.type: Timestamp
+    transforms.timestamp.field: fecha
+    transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
