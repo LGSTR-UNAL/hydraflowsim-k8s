@@ -1,4 +1,4 @@
-FROM quay.io/strimzi/kafka:latest-kafka-3.5.1
+FROM quay.io/strimzi/kafka:0.43.0-kafka-3.7.0
 USER root:root
 
 # --- Directory for Kafka Connect Plugins ---
@@ -21,21 +21,16 @@ RUN curl https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/
     -o /opt/kafka/plugins/debezium/debezium-connector-postgres-2.1.3.Final-plugin.tar.gz \
     && tar xzvf /opt/kafka/plugins/debezium/debezium-connector-postgres-2.1.3.Final-plugin.tar.gz -C /opt/kafka/plugins/debezium/ \
     && rm /opt/kafka/plugins/debezium/debezium-connector-postgres-2.1.3.Final-plugin.tar.gz
-# debezium mongodb connector
-# https://debezium.io/documentation/reference/stable/connectors/postgresql.html
-RUN curl https://repo1.maven.org/maven2/io/debezium/debezium-connector-mongodb/2.1.3.Final/debezium-connector-mongodb-2.1.3.Final-plugin.tar.gz \
-    -o /opt/kafka/plugins/debezium/debezium-connector-mongodb-2.1.3.Final-plugin.tar.gz \
-    && tar xzvf /opt/kafka/plugins/debezium/debezium-connector-mongodb-2.1.3.Final-plugin.tar.gz -C /opt/kafka/plugins/debezium/ \
-    && rm /opt/kafka/plugins/debezium/debezium-connector-mongodb-2.1.3.Final-plugin.tar.gz
 
+# https://debezium.io/documentation/reference/stable/connectors/postgresql.html
 # --- Directory for Confluent plugins ---
 RUN mkdir -p /opt/kafka/plugins/confluent
 # confluent jdbc connector
 # https://debezium.io/documentation/reference/stable/connectors/mongodb.html
-RUN curl https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.6.4/confluentinc-kafka-connect-jdbc-10.6.4.zip \
-    -o /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.6.4.zip \
-    && unzip -qq /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.6.4.zip -d /opt/kafka/plugins/confluent/ \
-    && rm /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.6.4.zip
+RUN curl https://d2p6pa21dvn84.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.7.12/confluentinc-kafka-connect-jdbc-10.7.12.zip \
+    -o /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.7.12.zip \
+    && unzip -qq /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.7.12.zip -d /opt/kafka/plugins/confluent/ \
+    && rm /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.7.12.zip
 
 # --- Directory for community plugins
 RUN mkdir -p /opt/kafka/plugins/community
