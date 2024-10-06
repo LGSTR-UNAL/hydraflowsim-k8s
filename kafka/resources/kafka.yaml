@@ -12,7 +12,7 @@ spec:
         cpu: "150m"
       limits:
         memory: 4Gi
-        cpu: "250m"
+        cpu: "1"
     storage:
       type: persistent-claim
       size: 1Gi
