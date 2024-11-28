@@ -26,7 +26,7 @@ spec:
         - name: resources.limits.memory
           value: 6Gi
         - name: replicaCount
-          value: '2'
+          value: '1'
         - name: patroni.bootstrap.dcs.postgresql.parameters.shared_buffers
           value: 2048MB
         - name: patroni.bootstrap.dcs.postgresql.parameters.effective_cache_size
