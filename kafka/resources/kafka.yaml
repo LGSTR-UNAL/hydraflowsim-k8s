@@ -30,10 +30,14 @@ spec:
         port: 9092
         type: internal
         tls: false
+          authentication:
+          type: none
       - name: external
         port: 9094
         type: nodeport
-        tls: true
+        tls: false
+        authentication:
+          type: none
     authorization:
       type: simple
     config:
