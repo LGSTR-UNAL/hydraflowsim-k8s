@@ -16,7 +16,7 @@ spec:
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
     auto.evolve: "true"
-    connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/core"
+    connection.url: "jdbc:postgresql://timescaledb.databases.svc.cluster.local:5432/yaluk"
     connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:username}"
     connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
     transforms: timestamp
