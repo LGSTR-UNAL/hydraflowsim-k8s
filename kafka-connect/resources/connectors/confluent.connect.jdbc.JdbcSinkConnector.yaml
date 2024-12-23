@@ -11,7 +11,7 @@ spec:
   autoRestart:
     enabled: true
   config:
-    topics: core.nowcasting.linet-flashes
+    topics: yaluk.streaming.simulation-results
     table.name.format: ${topic}
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
