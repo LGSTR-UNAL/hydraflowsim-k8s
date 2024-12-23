@@ -34,8 +34,6 @@ spec:
         port: 9094
         type: nodeport
         tls: true
-        authentication:
-          type: scram-sha-512
     authorization:
       type: simple
     config:
