@@ -26,31 +26,31 @@ spec:
             - >-
               python3 /opt/yaluk/main.py
           env:
-            - name: "TPBIG_PATH"
+            - name: TPBIG_PATH
               value: "/opt/yaluk/libatp/tpbig"
-            - name: "YALUK_PATH"
+            - name: YALUK_PATH
               value: "/opt/yaluk/yaluk"
-            - name: "KAFKA_HOST"
+            - name: KAFKA_HOST
               value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
-            - name: "REQUEST_TOPIC"
+            - name: REQUEST_TOPIC
               value: "simulations"
-            - name: "RESULTS_TOPIC"
+            - name: RESULTS_TOPIC
               value: "yaluk.streaming.simulation-results"
-            - name: "CONSUMER_GROUP_ID"
+            - name: CONSUMER_GROUP_ID
               value: "yaluk"
-            - name: "DB_HOST"
+            - name: DB_HOST
               value: "timescaledb.databases.svc.cluster.local"
-            - name: "DB_PORT"
+            - name: DB_PORT
               value: "5432"
-            - name: "DB_NAME"
+            - name: DB_NAME
               value: "yaluk"
-            - name: "DB_USER"
+            - name: DB_USER
               value: "postgres"
-            - name: "DB_PASSWORD"
+            - name: DB_PASSWORD
               value: "CQRe8kZoWSw0kxW4"
-          resources:
-            requests:
-              memory: "1G"
-              cpu: "1"
+          # resources:
+          #   requests:
+          #     memory: "1G"
+          #     cpu: "1"
       imagePullSecrets:
         - name: regcrec
