@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: core.nowcasting.linet-flashes
+  name: yaluk.streaming.simulation-results
   labels:
     strimzi.io/cluster: kafka
 spec:
