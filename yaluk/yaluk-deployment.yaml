@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: yaluk
+  name: yaluk
+  namespace: yaluk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaluk
+  template:
+    metadata:
+      labels:
+        app: yaluk
+    spec:
+      containers:
+        - name: yaluk
+          image: lgstrunal/yaluk:0.0.1
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+              python3 /opt/yaluk/main.py
+          env:
+            - name: "TPBIG_PATH"
+              value: "/opt/yaluk/libatp/tpbig"
+            - name: "YALUK_PATH"
+              value: "/opt/yaluk/yaluk"
+            - name: "KAFKA_HOST"
+              value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: "REQUEST_TOPIC"
+              value: "simulations"
+            - name: "RESULTS_TOPIC"
+              value: "yaluk.streaming.simulation-results"
+            - name: "CONSUMER_GROUP_ID"
+              value: "yaluk"
+            - name: "DB_HOST"
+              value: "timescaledb.databases.svc.cluster.local"
+            - name: "DB_PORT"
+              value: "5432"
+            - name: "DB_NAME"
+              value: "yaluk"
+            - name: "DB_USER"
+              value: "postgres"
+            - name: "DB_PASSWORD"
+              value: "CQRe8kZoWSw0kxW4"
+          resources:
+            requests:
+              memory: "1GB"
+              cpu: "1"
+      imagePullSecrets:
+        - name: regcrec
