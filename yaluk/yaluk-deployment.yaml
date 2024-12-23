@@ -50,7 +50,7 @@ spec:
               value: "CQRe8kZoWSw0kxW4"
           resources:
             requests:
-              memory: "1GB"
+              memory: "1G"
               cpu: "1"
       imagePullSecrets:
         - name: regcrec
