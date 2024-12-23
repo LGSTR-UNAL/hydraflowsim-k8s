@@ -30,7 +30,7 @@ spec:
         port: 9092
         type: internal
         tls: false
-          authentication:
+        authentication:
           type: none
       - name: external
         port: 9094
