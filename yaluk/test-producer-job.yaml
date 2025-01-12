@@ -1,0 +1,31 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/name: test-producer
+  name: test-producer
+  namespace: yaluk
+spec:
+  template:
+    metadata:
+      labels:
+        name: test-producer
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: test-producer
+          imagePullPolicy: IfNotPresent
+          image: lgstrunal/test-producer:0.0.1
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+               python3 /opt/test-producer/main.pyc
+          env:
+            - name: KAFKA_HOST
+              value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: REQUEST_TOPIC
+              value: "simulations"
