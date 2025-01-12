@@ -24,7 +24,7 @@ spec:
           args:
             - -c
             - >-
-              python3 /opt/yaluk/main.pyc
+              python3 /opt/yaluk/bin/main.pyc
           env:
             - name: TPBIG_PATH
               value: "/opt/yaluk/libatp/tpbig"
