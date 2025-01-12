@@ -15,7 +15,7 @@ spec:
         cpu: "1"
     storage:
       type: persistent-claim
-      size: 1Gi
+      size: 20Gi
     readinessProbe:
       initialDelaySeconds: 15
       timeoutSeconds: 5
