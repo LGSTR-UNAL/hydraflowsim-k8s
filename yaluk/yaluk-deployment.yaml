@@ -19,7 +19,7 @@ spec:
       containers:
         - name: yaluk
           image: lgstrunal/yaluk:0.0.1
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           command: ["/bin/sh"]
           args:
             - -c
