@@ -17,7 +17,7 @@ spec:
         - name: regcred
       containers:
         - name: test-producer
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           image: lgstrunal/test-producer:0.0.1
           command: ["/bin/sh"]
           args:
