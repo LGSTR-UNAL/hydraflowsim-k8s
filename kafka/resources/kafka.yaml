@@ -5,14 +5,14 @@ metadata:
 spec:
   kafka:
     version: 3.7.0
-    replicas: 2
+    replicas: 3
     resources:
       requests:
         memory: 3Gi
-        cpu: "150m"
-      limits:
-        memory: 4Gi
         cpu: "1"
+      limits:
+        memory: 5Gi
+        cpu: "2.5"
     storage:
       type: persistent-claim
       size: 20Gi
