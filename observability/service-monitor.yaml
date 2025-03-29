@@ -4,7 +4,7 @@ metadata:
   name: kafka-exporter
   namespace: observability
   labels:
-    release: prometheus
+    release: kube-prom-stack
 spec:
   selector:
     matchLabels:
