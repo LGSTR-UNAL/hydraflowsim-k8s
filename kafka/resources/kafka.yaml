@@ -41,6 +41,12 @@ spec:
       default.replication.factor: 2
       min.insync.replicas: 2
       inter.broker.protocol.version: "3.5"
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
   zookeeper:
     replicas: 3
     storage:
@@ -50,6 +56,12 @@ spec:
     config:
       ssl.hostnameVerification: false
       ssl.quorum.hostnameVerification: false
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: zookeeper-metrics-config.yml
   entityOperator:
     topicOperator: {}
     userOperator: {}
