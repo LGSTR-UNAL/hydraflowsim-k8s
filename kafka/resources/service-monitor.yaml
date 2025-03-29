@@ -12,5 +12,27 @@ spec:
     matchNames:
       - kafka
   endpoints:
-    - port: tcp-prometheus
-      path: /metrics
+  - port: metrics
+    honorLabels: true
+    interval: 10s
+    scrapeTimeout: 10s
+    path: /metrics
+    scheme: http
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_endpoints_name]
+      separator: ;
+      regex: prometheus-kube-state-metrics
+      replacement: $1
+      action: keep
+  - port: metrics
+    honorLabels: true
+    interval: 10s
+    scrapeTimeout: 10s
+    path: /metrics
+    scheme: http
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_endpoints_name]
+      separator: ;
+      regex: prometheus-node-exporter
+      replacement: $1
+      action: keep
