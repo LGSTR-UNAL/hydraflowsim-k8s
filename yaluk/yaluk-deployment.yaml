@@ -7,7 +7,7 @@ metadata:
   name: yaluk
   namespace: yaluk
 spec:
-  replicas: 7
+  replicas: 8
   selector:
     matchLabels:
       app: yaluk
