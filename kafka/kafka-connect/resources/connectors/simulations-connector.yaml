@@ -21,8 +21,8 @@ spec:
     connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:password}"
     transforms: timestamp, drop
     transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
-    transforms.drop.type: io.confluent.connect.transforms.Drop$Key
-    transforms.drop.fields: id, delete_tmp, case
+    transforms.drop.type: org.apache.kafka.connect.transforms.ReplaceField$Value
+    transforms.drop.blacklist: id, delete_tmp, case
     transforms.timestamp.target.type: Timestamp
     transforms.timestamp.field: fecha
     transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
