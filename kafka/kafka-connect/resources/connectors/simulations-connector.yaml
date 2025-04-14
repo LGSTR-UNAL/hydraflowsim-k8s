@@ -22,7 +22,7 @@ spec:
     transforms: timestamp, drop
     transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
     transforms.drop.type: org.apache.kafka.connect.transforms.ReplaceField$Value
-    transforms.drop.blacklist: id, delete_tmp, case
+    transforms.drop.blacklist: delete_tmp
     transforms.timestamp.target.type: Timestamp
     transforms.timestamp.field: fecha
     transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
