@@ -33,7 +33,7 @@ spec:
             - name: KAFKA_HOST
               value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
-              value: "simulations"
+              value: "yaluk.streaming.simulations"
             - name: RESULTS_TOPIC
               value: "yaluk.streaming.simulation-results"
             - name: CONSUMER_GROUP_ID
