@@ -48,9 +48,12 @@ spec:
               value: "yaluk"
             - name: DB_PASSWORD
               value: "CQRe8kZoWSw0kxW4"
-          # resources:
-          #   requests:
-          #     memory: "1G"
-          #     cpu: "1"
+          resources:
+            requests:
+              memory: "1G"
+              cpu: "200m"
+            limits:
+              memory: "1G"
+              cpu: "200m"
       imagePullSecrets:
         - name: regcred
