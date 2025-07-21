@@ -51,9 +51,9 @@ spec:
           resources:
             requests:
               memory: "1G"
-              cpu: "500m"
+              cpu: "750m"
             limits:
               memory: "1G"
-              cpu: "500m"
+              cpu: "750m"
       imagePullSecrets:
         - name: regcred
