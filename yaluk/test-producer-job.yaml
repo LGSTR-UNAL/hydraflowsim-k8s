@@ -18,7 +18,7 @@ spec:
       containers:
         - name: test-producer
           imagePullPolicy: Always
-          image: lgstrunal/test-producer:keraunos
+          image: lgstrunal/test-producer:0.0.3
           command: ["/bin/sh"]
           args:
             - -c
