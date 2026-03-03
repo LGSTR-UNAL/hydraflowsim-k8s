@@ -24,8 +24,8 @@ spec:
             - -c
             - >-
                python3 /opt/test-producer/main.pyc 
-               --file /opt/test-producer/data/LN450.csv 
-               --circuit LN450
+               --file /opt/test-producer/data/J-JB.csv 
+               --circuit J-JB
           env:
             - name: KAFKA_HOST
               value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
