@@ -24,8 +24,8 @@ spec:
             - -c
             - >-
                python3 /opt/test-producer/main.pyc 
-               --file /opt/test-producer/data/J-TIG.csv 
-               --circuit J-TIG
+               --file /opt/test-producer/data/JB-TE.csv 
+               --circuit JB-TE
           env:
             - name: KAFKA_HOST
               value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
