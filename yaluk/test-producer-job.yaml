@@ -24,8 +24,8 @@ spec:
             - -c
             - >-
                python3 /opt/test-producer/main.pyc 
-               --file /opt/test-producer/data/T-TB.csv 
-               --circuit T-TB
+               --file /opt/test-producer/data/T-TR.csv 
+               --circuit T-TR
           env:
             - name: KAFKA_HOST
               value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
