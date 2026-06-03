@@ -8,7 +8,7 @@ spec:
   type: NodePort
   externalTrafficPolicy: Cluster
   selector:
-    name: yaluk-server
+    app: yaluk-server
   ports:
     - name: yaluk-server
       protocol: TCP
