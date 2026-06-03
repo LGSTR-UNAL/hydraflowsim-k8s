@@ -37,7 +37,7 @@ spec:
             - name: REQUEST_TOPIC
               value: "yaluk.streaming.simulations"
             - name: S3_ENDPOINT_URL
-              value: "http://minio.storage.svc.cluster.local:32000/"
+              value: "http://minio.storage.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
               value: "0DlT2qseWtjpq3spgSe9"
             - name: AWS_SECRET_ACCESS_KEY
