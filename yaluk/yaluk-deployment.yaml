@@ -29,7 +29,7 @@ spec:
             - name: TPBIG_PATH
               value: "/opt/yaluk/libatp/tpbig"
             - name: YALUK_PATH
-              value: "/opt/yaluk"
+              value: "/opt/yaluk/libatp"
             - name: KAFKA_HOST
               value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
