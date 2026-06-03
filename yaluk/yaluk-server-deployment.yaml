@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: yaluk-server
+  name: yaluk-server
+  namespace: yaluk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaluk-server
+  template:
+    metadata:
+      labels:
+        app: yaluk-server
+    spec:
+      containers:
+        - name: yaluk-server
+          image: lgstrunal/yaluk-server:0.0.3
+          imagePullPolicy: Always
+          ports:
+            - name: yk-port
+              containerPort: 8000
+              protocol: TCP
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+              python3 /opt/server/main.py
+          env:
+            - name: SOLVER_PATH
+              value: "/opt/yaluk/libatp/tpbig"
+            - name: REQUEST_TOPIC
+              value: "yaluk-requests"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
+            - name: REQUEST_TOPIC
+              value: "yaluk.streaming.simulations"
+            - name: S3_ENDPOINT_URL
+              value: "http://minio.storage.svc.cluster.local:32000/"
+            - name: AWS_ACCESS_KEY_ID
+              value: "0DlT2qseWtjpq3spgSe9"
+            - name: AWS_SECRET_ACCESS_KEY
+              value: "QkOsYVZtLd737i49UBj4PUoJA4jbHcFuUCDJMPt8"          
+      imagePullSecrets:
+        - name: regcred
