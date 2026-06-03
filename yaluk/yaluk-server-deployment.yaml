@@ -24,11 +24,9 @@ spec:
             - name: yk-port
               containerPort: 8000
               protocol: TCP
-          command: ["/bin/sh"]
-          args:
-            - -c
-            - >-
-              python3 /opt/server/main.py
+          workingDir: /opt/server
+          command: ["uvicorn"]
+          args: ["main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
           env:
             - name: SOLVER_PATH
               value: "/opt/yaluk/libatp/tpbig"
