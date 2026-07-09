@@ -11,7 +11,7 @@ metadata:
 spec:
   image: lgstrunal/kafka-connect
   version: 3.4.0
-  replicas: 3
+  replicas: 2
   bootstrapServers: kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
   config:
     config.providers: file
