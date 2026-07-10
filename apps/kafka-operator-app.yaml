@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: "https://strimzi.io/charts/"
-    targetRevision: 0.43.0
+    targetRevision: 1.1.0
     chart: strimzi-kafka-operator
   destination:
     server: "https://kubernetes.default.svc"
