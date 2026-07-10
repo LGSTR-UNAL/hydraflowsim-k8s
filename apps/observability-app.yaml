@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: observability
-    repoURL: https://github.com/LGSTR-UNAL/yaluk-k8s-ops.git
+    repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s-ops.git
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc

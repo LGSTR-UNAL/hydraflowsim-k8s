@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: apps
-    repoURL: https://github.com/LGSTR-UNAL/yaluk-k8s-ops.git
+    repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s-ops.git
     targetRevision: main
     directory:
       recurse: false
