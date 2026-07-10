@@ -20,10 +20,6 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
-  template:
-    pod:
-      imagePullSecrets:
-        - name: regcred
   externalConfiguration:
     volumes:
       - name: confluent-jdbc-sink-connector-config
