@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: observability
+  namespace: argocd
+  # finalizers:
+  # - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: observability
+    repoURL: https://github.com/LGSTR-UNAL/yaluk-k8s-ops.git
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: yaluk
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

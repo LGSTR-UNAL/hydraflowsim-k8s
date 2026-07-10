@@ -11,4 +11,8 @@ spec:
     chart: strimzi-kafka-operator
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: kafka
+    namespace: yaluk
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

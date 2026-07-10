@@ -12,7 +12,7 @@ spec:
   image: lgstrunal/kafka-connect
   version: 3.4.0
   replicas: 2
-  bootstrapServers: kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
+  bootstrapServers: kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092
   config:
     config.providers: file
     config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider

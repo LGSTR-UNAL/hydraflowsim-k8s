@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: databases
+  namespace: yaluk
   name: timescale-patch
 rules:
 - apiGroups: [""] # "" indicates the core API group
@@ -13,11 +13,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: timescale-patch-binding
-  namespace: databases
+  namespace: yaluk
 subjects:
 - kind: ServiceAccount
   name: timescaledb
-  namespace: databases
+  namespace: yaluk
 roleRef:
   kind: Role 
   name: timescale-patch

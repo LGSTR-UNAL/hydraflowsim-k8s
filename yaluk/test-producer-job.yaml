@@ -28,6 +28,6 @@ spec:
                --circuit 216-13
           env:
             - name: KAFKA_HOST
-              value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
+              value: "kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
               value: "yaluk.streaming.simulations"

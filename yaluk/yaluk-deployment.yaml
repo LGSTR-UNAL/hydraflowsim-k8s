@@ -31,7 +31,7 @@ spec:
             - name: YALUK_PATH
               value: "/opt/yaluk/libatp"
             - name: KAFKA_HOST
-              value: "kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
+              value: "kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
               value: "yaluk.streaming.simulations"
             - name: RESULTS_TOPIC
@@ -39,7 +39,7 @@ spec:
             - name: CONSUMER_GROUP_ID
               value: "yaluk"
             - name: DB_HOST
-              value: "timescaledb.databases.svc.cluster.local"
+              value: "timescaledb.yaluk.svc.cluster.local"
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME
