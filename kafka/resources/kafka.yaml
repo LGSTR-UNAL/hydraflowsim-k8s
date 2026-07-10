@@ -2,29 +2,13 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
   name: kafka
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
 spec:
   kafka:
-    version: 3.7.0
-    replicas: 2
-    resources:
-      requests:
-        memory: 3Gi
-        cpu: "1"
-      limits:
-        memory: 5Gi
-        cpu: "2.5"
-    storage:
-      type: persistent-claim
-      size: 20Gi
-    readinessProbe:
-      initialDelaySeconds: 15
-      timeoutSeconds: 5
-    livenessProbe:
-      initialDelaySeconds: 30
-      timeoutSeconds: 5
-    jvmOptions:
-      -Xms: 3072m
-      -Xmx: 3072m
+    version: 4.2.0
+    metadataVersion: 4.2-IV0 # confirma el string exacto en la doc de tu versión de Strimzi
     listeners:
       - name: plain
         port: 9092
@@ -34,40 +18,57 @@ spec:
         port: 9094
         type: nodeport
         tls: false
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    livenessProbe:
+      initialDelaySeconds: 30
+      timeoutSeconds: 5
     config:
       offsets.topic.replication.factor: 2
       transaction.state.log.replication.factor: 2
       transaction.state.log.min.isr: 2
       default.replication.factor: 2
       min.insync.replicas: 2
-      inter.broker.protocol.version: "3.5"
+      # inter.broker.protocol.version fuera: en KRaft se maneja via metadataVersion
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
         configMapKeyRef:
           name: kafka-metrics
           key: kafka-metrics-config.yml
-  zookeeper:
-    replicas: 2
-    storage:
-      type: persistent-claim
-      size: 1Gi
-      deleteClaim: false
-    config:
-      ssl.hostnameVerification: false
-      ssl.quorum.hostnameVerification: false
-    metricsConfig:
-      type: jmxPrometheusExporter
-      valueFrom:
-        configMapKeyRef:
-          name: kafka-metrics
-          key: zookeeper-metrics-config.yml
   entityOperator:
     topicOperator: {}
     userOperator: {}
   kafkaExporter:
     topicRegex: ".*"
     groupRegex: ".*"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: dual-role
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  replicas: 2
+  roles:
+    - controller
+    - broker
+  storage:
+    type: persistent-claim
+    size: 20Gi
+    deleteClaim: false
+  resources:
+    requests:
+      memory: 3Gi
+      cpu: "1"
+    limits:
+      memory: 5Gi
+      cpu: "2.5"
+  jvmOptions:
+    -Xms: 3072m
+    -Xmx: 3072m
 ---
 kind: ConfigMap
 apiVersion: v1
