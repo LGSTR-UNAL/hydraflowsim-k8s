@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://charts.timescale.com'
+    repoURL: "https://charts.timescale.com"
     targetRevision: 0.33.1
     helm:
       valueFiles:
@@ -26,7 +26,7 @@ spec:
         - name: resources.limits.memory
           value: 6Gi
         - name: replicaCount
-          value: '1'
+          value: "1"
         - name: patroni.bootstrap.dcs.postgresql.parameters.shared_buffers
           value: 2048MB
         - name: patroni.bootstrap.dcs.postgresql.parameters.effective_cache_size
@@ -36,16 +36,16 @@ spec:
         - name: patroni.bootstrap.dcs.postgresql.parameters.work_mem
           value: 64MB
         - name: patroni.bootstrap.dcs.postgresql.parameters.max_parallel_workers
-          value: '4'
+          value: "4"
         - name: >-
             patroni.bootstrap.dcs.postgresql.parameters.max_parallel_workers_per_gather
-          value: '2'
+          value: "2"
         - name: patroni.bootstrap.dcs.postgresql.parameters.autovacuum_max_workers
-          value: '10'
+          value: "10"
         - name: patroni.bootstrap.dcs.postgresql.parameters.autovacuum_naptime
-          value: '10'
+          value: "10"
         - name: patroni.bootstrap.dcs.postgresql.parameters.effective_io_concurrency
-          value: '256'
+          value: "256"
         - name: patroni.bootstrap.dcs.postgresql.parameters.max_wal_size
           value: 4GB
         - name: patroni.bootstrap.dcs.postgresql.parameters.min_wal_size
@@ -53,13 +53,12 @@ spec:
         - name: patroni.bootstrap.dcs.postgresql.parameters.wal_buffers
           value: 16MB
         - name: image.tag
-          value: pg16.3-ts2.15.2-all
+          value: pg18-ts2.28-all
     chart: timescaledb-single
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: yaluk
   syncPolicy:
     automated: {}
     syncOptions:
       - CreateNamespace=true
-
