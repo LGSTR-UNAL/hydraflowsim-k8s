@@ -1,4 +1,4 @@
-FROM quay.io/strimzi/kafka:0.43.0-kafka-3.7.0
+FROM quay.io/strimzi/kafka:1.1.0-kafka-4.2.0
 USER root:root
 
 # --- Directory for Kafka Connect Plugins ---
