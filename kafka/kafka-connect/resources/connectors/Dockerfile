@@ -27,10 +27,10 @@ RUN curl https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/
 RUN mkdir -p /opt/kafka/plugins/confluent
 # confluent jdbc connector
 # https://debezium.io/documentation/reference/stable/connectors/mongodb.html
-RUN curl https://d2p6pa21dvn84.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.7.12/confluentinc-kafka-connect-jdbc-10.7.12.zip \
-    -o /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.7.12.zip \
-    && unzip -qq /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.7.12.zip -d /opt/kafka/plugins/confluent/ \
-    && rm /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.7.12.zip
+RUN curl https://d2p6pa21dvn84.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.9.4/confluentinc-kafka-connect-jdbc-10.9.4.zip \
+    -o /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.9.4.zip \
+    && unzip -qq /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.9.4.zip -d /opt/kafka/plugins/confluent/ \
+    && rm /opt/kafka/plugins/confluent/confluentinc-kafka-connect-jdbc-10.9.4.zip
 
 # --- Directory for community plugins
 RUN mkdir -p /opt/kafka/plugins/community
