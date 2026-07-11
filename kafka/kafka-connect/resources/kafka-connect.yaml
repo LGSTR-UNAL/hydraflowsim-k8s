@@ -20,8 +20,13 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
-  externalConfiguration:
-    volumes:
-      - name: confluent-jdbc-sink-connector-config
-        secret:
-          secretName: postgres-credentials
+  template:
+    pod:
+      volumes:
+        - name: confluent-jdbc-sink-connector-config
+          secret:
+            secretName: postgres-credentials
+    connectContainer:
+      volumeMounts:
+        - name: confluent-jdbc-sink-connector-config
+          mountPath: /opt/kafka/external-configuration/confluent-jdbc-sink-connector-config
