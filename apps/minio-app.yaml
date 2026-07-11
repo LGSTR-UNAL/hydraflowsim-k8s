@@ -18,10 +18,6 @@ spec:
           value: NodePort
         - name: consoleService.type
           value: NodePort
-        - name: rootUser
-          value: console
-        - name: rootPassword
-          value: console123
     chart: minio
   destination:
     server: https://kubernetes.default.svc
