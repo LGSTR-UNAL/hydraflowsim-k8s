@@ -29,4 +29,4 @@ spec:
     connectContainer:
       volumeMounts:
         - name: confluent-jdbc-sink-connector-config
-          mountPath: /opt/kafka/external-configuration/confluent-jdbc-sink-connector-config
+          mountPath: /mnt/confluent-jdbc-sink-connector-config

@@ -17,8 +17,8 @@ spec:
     auto.create: "true"
     auto.evolve: "true"
     connection.url: "jdbc:postgresql://timescaledb.yaluk.svc.cluster.local:5432/yaluk"
-    connection.user: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:connection.username}"
-    connection.password: "${file:/opt/kafka/external-configuration/confluent-jdbc-sink-connector-config/connector.properties:connection.password}"
+    connection.user: "${file:/mnt/confluent-jdbc-sink-connector-config/connector.properties:connection.username}"
+    connection.password: "${file:/mnt/confluent-jdbc-sink-connector-config/connector.properties:connection.password}"
     transforms: timestamp, drop
     transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
     transforms.drop.type: org.apache.kafka.connect.transforms.ReplaceField$Value
