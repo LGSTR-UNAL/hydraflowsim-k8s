@@ -26,7 +26,16 @@ spec:
               protocol: TCP
           workingDir: /opt/server
           command: ["uvicorn"]
-          args: ["main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+          args:
+            [
+              "main:app",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8000",
+              "--workers",
+              "1",
+            ]
           env:
             - name: SOLVER_PATH
               value: "/opt/yaluk/libatp/tpbig"
@@ -39,8 +48,8 @@ spec:
             - name: S3_ENDPOINT_URL
               value: "http://minio.yaluk.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
-              value: "0DlT2qseWtjpq3spgSe9"
+              value: "s73Lm8Xjs94InpaxkFTx"
             - name: AWS_SECRET_ACCESS_KEY
-              value: "QkOsYVZtLd737i49UBj4PUoJA4jbHcFuUCDJMPt8"          
+              value: "SmPKWyAf7FuitlwMlq3zQpSzmWkx86IHpFZCs46R"
       imagePullSecrets:
         - name: regcred
