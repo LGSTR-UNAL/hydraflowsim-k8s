@@ -55,7 +55,7 @@ spec:
         - name: pgBouncer.enabled
           value: "true"
         - name: image.tag
-          value: pg18-ts2.28-all
+          value: pg15-ts2.28-all
         - name: patroni.kubernetes.use_endpoints
           value: "false"
     chart: timescaledb-single
