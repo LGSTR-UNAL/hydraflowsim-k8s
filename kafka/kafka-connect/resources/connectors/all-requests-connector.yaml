@@ -2,7 +2,7 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaConnector
 metadata:
-  name: simulations-connector
+  name: all-requests-connector
   labels:
     strimzi.io/cluster: kafka-connect
 spec:
