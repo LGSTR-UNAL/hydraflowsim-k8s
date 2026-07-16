@@ -52,6 +52,8 @@ spec:
           value: 512MB
         - name: patroni.bootstrap.dcs.postgresql.parameters.wal_buffers
           value: 16MB
+        - name: pgbouncer.enabled
+          value: "true"
         - name: image.tag
           value: pg18-ts2.28-all
     chart: timescaledb-single
