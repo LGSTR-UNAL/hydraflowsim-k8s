@@ -52,4 +52,4 @@ spec:
             - name: AWS_SECRET_ACCESS_KEY
               value: "SmPKWyAf7FuitlwMlq3zQpSzmWkx86IHpFZCs46R"
       imagePullSecrets:
-        - name: regcred
+        - name: reg-cred

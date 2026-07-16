@@ -38,16 +38,22 @@ spec:
               value: "yaluk.streaming.simulation-results"
             - name: CONSUMER_GROUP_ID
               value: "yaluk"
-            - name: DB_HOST
-              value: "timescaledb.yaluk.svc.cluster.local"
-            - name: DB_PORT
+            - name: POSTGRES_HOST
+              value: "postgres-pooler.yaluk.svc.cluster.local"
+            - name: POSTGRES_PORT
               value: "5432"
-            - name: DB_NAME
-              value: "yaluk"
-            - name: DB_USER
-              value: "yaluk"
-            - name: DB_PASSWORD
-              value: "CQRe8kZoWSw0kxW4"
-          
+            - name: POSTGRES_DB
+              value: "app"
+            - name: POSTGRES_USER
+              value: "app"
+            - name: POSTGRES_PASSWORD
+              value: "h8M0vpToKjCOnow3sAAJ8aZVmFDhZWAJJUEpe2xhFVu7r1REysCxLuBzHJ1wk5F0"
+            - name: S3_ENDPOINT_URL
+              value: "http://minio.yaluk.svc.cluster.local:9000/"
+            - name: AWS_ACCESS_KEY_ID
+              value: "s73Lm8Xjs94InpaxkFTx"
+            - name: AWS_SECRET_ACCESS_KEY
+              value: "SmPKWyAf7FuitlwMlq3zQpSzmWkx86IHpFZCs46R"
+
       imagePullSecrets:
-        - name: regcred
+        - name: reg-cred
