@@ -12,7 +12,7 @@ spec:
     enabled: true
   config:
     topics: yaluk.streaming.simulations
-    table.name.format: ${topic}
+    table.name.format: yaluk.streaming.simulation
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
     auto.evolve: "true"
