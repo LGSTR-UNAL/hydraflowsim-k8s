@@ -13,3 +13,11 @@ spec:
     parameters:
       max_client_conn: "1000"
       default_pool_size: "25"
+  serviceTemplate:
+    spec:
+      type: NodePort
+      ports:
+        - name: pgbouncer
+          port: 5432
+          targetPort: 5432
+          protocol: TCP
