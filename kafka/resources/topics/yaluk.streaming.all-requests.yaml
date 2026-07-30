@@ -7,4 +7,4 @@ metadata:
 spec:
   partitions: 2
   config:
-    retention.ms: 100000
+    retention.ms: 300000

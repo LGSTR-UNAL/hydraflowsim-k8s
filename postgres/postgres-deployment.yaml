@@ -4,7 +4,7 @@ metadata:
   name: postgres
   namespace: yaluk
 spec:
-  instances: 3
+  instances: 2
 
   storage:
-    size: 100Gi
+    size: 150Gi
