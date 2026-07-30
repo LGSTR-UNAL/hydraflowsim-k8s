@@ -47,7 +47,7 @@ spec:
             - name: POSTGRES_USER
               value: "app"
             - name: POSTGRES_PASSWORD
-              value: "h8M0vpToKjCOnow3sAAJ8aZVmFDhZWAJJUEpe2xhFVu7r1REysCxLuBzHJ1wk5F0"
+              value: "boJB1dal41Hm1BdWruZMbM5ZLNRuJSfaG8eCNSvoBYNwUQOa4TfPSO4XAO2l4HsX"
             - name: S3_ENDPOINT_URL
               value: "http://minio.yaluk.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
