@@ -47,13 +47,13 @@ spec:
             - name: POSTGRES_USER
               value: "app"
             - name: POSTGRES_PASSWORD
-              value: "boJB1dal41Hm1BdWruZMbM5ZLNRuJSfaG8eCNSvoBYNwUQOa4TfPSO4XAO2l4HsX"
+              value: "GI8u5skOdiSii8JkmYgSjv0MyvzJZ7vHy6dN4xwzT7iwCPdLFFyr2lKY7neCiSzt"
             - name: S3_ENDPOINT_URL
               value: "http://minio.yaluk.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
-              value: "s73Lm8Xjs94InpaxkFTx"
+              value: "SclERI932kuy0vlVbPCq"
             - name: AWS_SECRET_ACCESS_KEY
-              value: "SmPKWyAf7FuitlwMlq3zQpSzmWkx86IHpFZCs46R"
+              value: "EddRb6gQWONO49ALEcRtaMQDTCCiyI8QlGN3D8u5"
 
       imagePullSecrets:
         - name: reg-cred
