@@ -24,3 +24,6 @@ spec:
     transforms.timestamp.target.type: Timestamp
     transforms.timestamp.field: fecha
     transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
+    batch.size: 300
+    consumer.override.fetch.max.wait.ms: "10000"
+    consumer.override.fetch.min.bytes: "1048576"
