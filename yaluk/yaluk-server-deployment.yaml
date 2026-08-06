@@ -48,8 +48,14 @@ spec:
             - name: S3_ENDPOINT_URL
               value: "http://minio.yaluk.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
-              value: "SclERI932kuy0vlVbPCq"
+              valueFrom:
+                secretKeyRef:
+                  name: minio
+                  key: rootUser
             - name: AWS_SECRET_ACCESS_KEY
-              value: "EddRb6gQWONO49ALEcRtaMQDTCCiyI8QlGN3D8u5"
+              valueFrom:
+                secretKeyRef:
+                  name: minio
+                  key: rootPassword
       imagePullSecrets:
         - name: reg-cred
