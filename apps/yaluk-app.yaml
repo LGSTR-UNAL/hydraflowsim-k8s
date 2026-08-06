@@ -10,7 +10,7 @@ spec:
   source:
     path: yaluk
     repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s-ops.git
-    targetRevision: main
+    targetRevision: dev
   destination:
     server: https://kubernetes.default.svc
     namespace: yaluk

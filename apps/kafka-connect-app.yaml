@@ -10,7 +10,7 @@ spec:
   source:
     path: kafka/kafka-connect
     repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s-ops.git
-    targetRevision: main
+    targetRevision: dev
     directory:
       recurse: true
       exclude: "**/Dockerfile"
