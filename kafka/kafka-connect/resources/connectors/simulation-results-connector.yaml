@@ -17,8 +17,8 @@ spec:
     auto.create: "true"
     auto.evolve: "true"
     connection.url: "jdbc:postgresql://postgres-pooler.yaluk.svc.cluster.local:5432/app"
-    connection.user: "${file:/mnt/confluent-jdbc-sink-connector-config/connector.properties:connection.username}"
-    connection.password: "${file:/mnt/confluent-jdbc-sink-connector-config/connector.properties:connection.password}"
+    connection.user: "${env:PG_USER}"
+    connection.password: "${env:PG_PASSWORD}"
     transforms: timestamp
     transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
     transforms.timestamp.target.type: Timestamp

@@ -14,8 +14,8 @@ spec:
   offsetStorageTopic: connect-cluster-offsets
   statusStorageTopic: connect-cluster-status
   config:
-    config.providers: file
-    config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider
+    config.providers: env
+    config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
     auto.create.topics.enable: "true"
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
@@ -28,6 +28,14 @@ spec:
           secret:
             secretName: postgres-credentials
     connectContainer:
-      volumeMounts:
-        - name: confluent-jdbc-sink-connector-config
-          mountPath: /mnt/confluent-jdbc-sink-connector-config
+      env:
+        - name: PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-app
+              key: user
+        - name: PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-app
+              key: password
