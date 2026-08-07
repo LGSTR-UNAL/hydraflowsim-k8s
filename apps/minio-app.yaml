@@ -18,8 +18,24 @@ spec:
           value: NodePort
         - name: consoleService.type
           value: NodePort
-        - name: buckets
-          value: "{yaluk-requests,yaluk-resources,yaluk-results}"
+        - name: buckets[0].name
+          value: yaluk-requests
+        - name: buckets[0].policy
+          value: none
+        - name: buckets[0].purge
+          value: "false"
+        - name: buckets[1].name
+          value: yaluk-resources
+        - name: buckets[1].policy
+          value: none
+        - name: buckets[1].purge
+          value: "false"
+        - name: buckets[2].name
+          value: yaluk-results
+        - name: buckets[2].policy
+          value: none
+        - name: buckets[2].purge
+          value: "false"
     chart: minio
   destination:
     server: https://kubernetes.default.svc
