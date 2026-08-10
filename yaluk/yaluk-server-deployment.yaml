@@ -57,5 +57,21 @@ spec:
                 secretKeyRef:
                   name: minio
                   key: rootPassword
+            - name: DB_HOST
+              value: "postgres-pooler.yaluk.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "app"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
       imagePullSecrets:
         - name: reg-cred

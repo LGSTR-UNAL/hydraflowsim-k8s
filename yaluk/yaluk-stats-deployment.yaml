@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: yaluk-stats
+  name: yaluk-stats
+  namespace: yaluk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yaluk-stats
+  template:
+    metadata:
+      labels:
+        app: yaluk-stats
+    spec:
+      containers:
+        - name: yaluk-stats
+          image: lgstrunal/yaluk-stats:beta
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: "postgres-pooler.yaluk.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "app"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
+      imagePullSecrets:
+        - name: reg-cred
