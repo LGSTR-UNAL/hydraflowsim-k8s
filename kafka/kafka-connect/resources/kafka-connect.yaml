@@ -5,7 +5,7 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
-  image: lgstrunal/kafka-connect:4.2.0-jdbc10.9.4
+  image: quay.io/strimzi/kafka:1.1.0-kafka-4.2.0
   version: 4.2.0
   replicas: 2
   bootstrapServers: kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092
@@ -14,6 +14,12 @@ spec:
   offsetStorageTopic: connect-cluster-offsets
   statusStorageTopic: connect-cluster-status
   build:
+    output:
+      type: docker
+      image: lgstrunal/kafka-connect:4.2.0
+      name: kafka-connect
+      pushSecret:
+        name: reg-cred
     plugins:
       - name: jdbc-connector
         artifacts:
