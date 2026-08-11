@@ -36,6 +36,8 @@ spec:
               value: "yaluk.streaming.simulations"
             - name: RESULTS_TOPIC
               value: "yaluk.streaming.simulation-results"
+            - name: SIMULATION_STATUS_TOPIC
+              value: "yaluk.streaming.simulation-status"
             - name: CONSUMER_GROUP_ID
               value: "yaluk"
             - name: POSTGRES_HOST

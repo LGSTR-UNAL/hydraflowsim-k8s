@@ -40,7 +40,7 @@ spec:
             - name: SOLVER_PATH
               value: "/opt/yaluk/libatp/tpbig"
             - name: ALL_REQUEST_TOPIC
-              value: "yaluk.streaming.all-requests"
+              value: "yaluk.streaming.all-simulations"
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
