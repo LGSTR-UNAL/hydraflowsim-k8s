@@ -18,8 +18,7 @@ spec:
       type: docker
       image: lgstrunal/kafka-connect:4.2.0
       name: kafka-connect
-      pushSecret:
-        name: reg-cred
+      pushSecret: reg-cred
     plugins:
       - name: jdbc-connector
         artifacts:
