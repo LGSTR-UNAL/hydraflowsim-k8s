@@ -1,0 +1,10 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: yaluk.streaming.all-simulations
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  partitions: 2
+  config:
+    retention.ms: 300000

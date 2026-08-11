@@ -2,7 +2,7 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaConnector
 metadata:
-  name: all-requests-connector
+  name: all-simulations-connector
   labels:
     strimzi.io/cluster: kafka-connect
 spec:
@@ -11,11 +11,14 @@ spec:
   autoRestart:
     enabled: true
   config:
-    topics: yaluk.streaming.all-requests
-    table.name.format: app.streaming.all_requests
+    topics: yaluk.streaming.all-simulations
+    table.name.format: app.streaming.all-simulations
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
     auto.evolve: "true"
+    insert.mode: "upsert"
+    pk.mode: "record_value"
+    pk.fields: "id"
     connection.url: "jdbc:postgresql://postgres-pooler.yaluk.svc.cluster.local:5432/app"
     connection.user: "${env:PG_USER}"
     connection.password: "${env:PG_PASSWORD}"

@@ -1,0 +1,31 @@
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnector
+metadata:
+  name: simulation-status-connector
+  labels:
+    strimzi.io/cluster: kafka-connect
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: 2
+  autoRestart:
+    enabled: true
+  config:
+    topics: yaluk.streaming.simulation-status
+    table.name.format: app.streaming.all-simulations
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    auto.create: "true"
+    auto.evolve: "true"
+    insert.mode: "upsert"
+    pk.mode: "record_value"
+    pk.fields: "id"
+    connection.url: "jdbc:postgresql://postgres-pooler.yaluk.svc.cluster.local:5432/app"
+    connection.user: "${env:PG_USER}"
+    connection.password: "${env:PG_PASSWORD}"
+    transforms: timestamp, drop
+    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+    transforms.drop.type: org.apache.kafka.connect.transforms.ReplaceField$Value
+    transforms.drop.blacklist: delete_tmp
+    transforms.timestamp.target.type: Timestamp
+    transforms.timestamp.field: fecha
+    transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS

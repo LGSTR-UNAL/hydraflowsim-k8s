@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaTopic
 metadata:
-  name: yaluk.streaming.all-requests
+  name: yaluk.streaming.simulation-status
   labels:
     strimzi.io/cluster: kafka
 spec:
