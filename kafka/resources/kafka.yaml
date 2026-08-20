@@ -61,14 +61,14 @@ spec:
     deleteClaim: false
   resources:
     requests:
-      memory: 3Gi
-      cpu: "1"
+      memory: 4Gi
+      cpu: "2"
     limits:
-      memory: 5Gi
-      cpu: "2.5"
+      memory: 6Gi
+      cpu: "3"
   jvmOptions:
-    -Xms: 3072m
-    -Xmx: 3072m
+    -Xms: 4096m
+    -Xmx: 4096m
 ---
 kind: ConfigMap
 apiVersion: v1

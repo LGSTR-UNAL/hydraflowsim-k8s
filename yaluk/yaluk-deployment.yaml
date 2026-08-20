@@ -7,7 +7,7 @@ metadata:
   name: yaluk
   namespace: yaluk
 spec:
-  replicas: 15
+  replicas: 50
   selector:
     matchLabels:
       app: yaluk
@@ -25,7 +25,16 @@ spec:
             - -c
             - >-
               python3 /opt/yaluk/bin/main.pyc
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1536Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
           env:
+            - name: OMP_NUM_THREADS
+              value: "1"
             - name: TPBIG_PATH
               value: "/opt/yaluk/libatp/tpbig"
             - name: YALUK_PATH
