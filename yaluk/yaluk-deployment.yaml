@@ -33,8 +33,6 @@ spec:
               cpu: "2"
               memory: "1536Mi"
           env:
-            - name: OMP_NUM_THREADS
-              value: "1"
             - name: TPBIG_PATH
               value: "/opt/yaluk/libatp/tpbig"
             - name: YALUK_PATH
@@ -77,6 +75,8 @@ spec:
                 secretKeyRef:
                   name: minio
                   key: rootPassword
+            - name: OMP_NUM_THREADS
+              value: "1"
 
       imagePullSecrets:
         - name: reg-cred
