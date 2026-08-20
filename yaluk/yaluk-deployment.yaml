@@ -28,10 +28,10 @@ spec:
           resources:
             requests:
               cpu: "1"
-              memory: "1536Mi"
+              memory: "512Mi"
             limits:
               cpu: "2"
-              memory: "2Gi"
+              memory: "1536Mi"
           env:
             - name: OMP_NUM_THREADS
               value: "1"
