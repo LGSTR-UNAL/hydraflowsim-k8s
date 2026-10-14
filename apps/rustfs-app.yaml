@@ -15,7 +15,7 @@ spec:
       releaseName: rustfs
       values: |
         fullnameOverride: rustfs
-        replicaCount: 2
+        replicaCount: 1
         drivesPerNode: 1
         secret:
           existingSecret: rustfs-credentials
