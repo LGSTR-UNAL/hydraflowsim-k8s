@@ -20,7 +20,7 @@ spec:
         secret:
           existingSecret: rustfs-credentials
         storageclass:
-          name: hostpath
+          name: microk8s-hostpath
           dataStorageSize: 50Gi
           logStorageSize: 1Gi
         service:
