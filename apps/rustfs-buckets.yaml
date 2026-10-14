@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: yaluk
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rustfs-bucket-init
+  namespace: yaluk
+spec:
+  backoffLimit: 20
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: create-buckets
+          image: amazon/aws-cli:2
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              endpoint="$S3_ENDPOINT_URL"
+              until aws s3api list-buckets --endpoint-url "$endpoint" --region us-east-1 >/dev/null 2>&1; do
+                sleep 5
+              done
+              for bucket in yaluk-requests yaluk-resources yaluk-results; do
+                if ! aws s3api head-bucket --bucket "$bucket" --endpoint-url "$endpoint" --region us-east-1 >/dev/null 2>&1; then
+                  aws s3api create-bucket --bucket "$bucket" --endpoint-url "$endpoint" --region us-east-1
+                fi
+              done
+          env:
+            - name: S3_ENDPOINT_URL
+              value: "http://rustfs.yaluk.svc.cluster.local:9000"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-credentials
+                  key: RUSTFS_ACCESS_KEY
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-credentials
+                  key: RUSTFS_SECRET_KEY
+            - name: AWS_DEFAULT_REGION
+              value: us-east-1

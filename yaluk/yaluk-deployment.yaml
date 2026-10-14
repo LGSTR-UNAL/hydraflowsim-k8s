@@ -65,17 +65,17 @@ spec:
                   name: postgres-app
                   key: password
             - name: S3_ENDPOINT_URL
-              value: "http://minio.yaluk.svc.cluster.local:9000/"
+              value: "http://rustfs.yaluk.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: minio
-                  key: rootUser
+                  name: rustfs-credentials
+                  key: RUSTFS_ACCESS_KEY
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: minio
-                  key: rootPassword
+                  name: rustfs-credentials
+                  key: RUSTFS_SECRET_KEY
             - name: OMP_NUM_THREADS
               value: "1"
 

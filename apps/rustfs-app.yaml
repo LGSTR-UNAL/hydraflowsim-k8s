@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rustfs
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.rustfs.com
+    targetRevision: 1.0.0-rc.5
+    chart: rustfs
+    helm:
+      releaseName: rustfs
+      values: |
+        fullnameOverride: rustfs
+        replicaCount: 2
+        drivesPerNode: 1
+        secret:
+          existingSecret: rustfs-credentials
+        storageclass:
+          dataStorageSize: 50Gi
+          logStorageSize: 1Gi
+        service:
+          type: NodePort
+          endpoint:
+            nodePort: 32000
+          console:
+            nodePort: 32001
+        ingress:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: yaluk
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
