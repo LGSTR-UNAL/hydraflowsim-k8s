@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: yaluk
-          image: lgstrunal/yaluk:beta
+          # Build and push the worker image from your software source, then replace this placeholder.
+          image: registry.example.com/your-project/yaluk-worker:1.0.0
           imagePullPolicy: Always
           command: ["/bin/sh"]
           args:

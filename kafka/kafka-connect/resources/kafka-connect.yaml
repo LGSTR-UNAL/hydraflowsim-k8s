@@ -5,7 +5,8 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
-  image: lgstrunal/kafka-connect:4.2.0-jdbc10.9.4
+  # Build and push this image with the included connectors Dockerfile, then replace this placeholder.
+  image: registry.example.com/your-project/kafka-connect:4.2.0-jdbc10.9.4
   version: 4.2.0
   replicas: 2
   bootstrapServers: kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092

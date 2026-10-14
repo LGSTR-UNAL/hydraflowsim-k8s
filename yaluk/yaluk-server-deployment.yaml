@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: yaluk-server
-          image: lgstrunal/yaluk-server:beta
+          # Build and push the server image from your software source, then replace this placeholder.
+          image: registry.example.com/your-project/yaluk-server:1.0.0
           imagePullPolicy: Always
           ports:
             - name: yk-port

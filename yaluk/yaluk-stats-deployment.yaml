@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: yaluk-stats
-          image: lgstrunal/yaluk-stats:beta
+          # Build and push the statistics service image from your software source, then replace this placeholder.
+          image: registry.example.com/your-project/yaluk-stats:1.0.0
           imagePullPolicy: Always
           env:
             - name: DB_HOST

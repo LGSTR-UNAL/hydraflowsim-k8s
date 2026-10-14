@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     path: kafka/resources
-    repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s-ops.git
-    targetRevision: dev
+    repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s.git
+    targetRevision: main
     directory:
       recurse: true
   destination:
