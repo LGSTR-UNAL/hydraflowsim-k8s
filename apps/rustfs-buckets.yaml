@@ -1,13 +1,10 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: yaluk
----
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: rustfs-bucket-init
   namespace: yaluk
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   backoffLimit: 20
   template:
