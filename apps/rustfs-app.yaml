@@ -20,6 +20,7 @@ spec:
         secret:
           existingSecret: rustfs-credentials
         storageclass:
+          name: hostpath
           dataStorageSize: 50Gi
           logStorageSize: 1Gi
         service:
