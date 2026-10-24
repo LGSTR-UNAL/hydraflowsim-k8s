@@ -2,7 +2,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Pooler
 metadata:
   name: postgres-pooler
-  namespace: yaluk
+  namespace: hydraflowsim
 spec:
   cluster:
     name: postgres

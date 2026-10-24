@@ -11,12 +11,12 @@ spec:
   autoRestart:
     enabled: true
   config:
-    topics: yaluk.streaming.simulation-results
+    topics: hydraflowsim.streaming.simulation-results
     table.name.format: app.streaming.simulation-results
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
     auto.evolve: "true"
-    connection.url: "jdbc:postgresql://postgres-pooler.yaluk.svc.cluster.local:5432/app"
+    connection.url: "jdbc:postgresql://postgres-pooler.hydraflowsim.svc.cluster.local:5432/app"
     connection.user: "${env:PG_USER}"
     connection.password: "${env:PG_PASSWORD}"
     transforms: timestamp

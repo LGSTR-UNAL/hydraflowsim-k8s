@@ -1,10 +1,10 @@
 {
-  "uid": "yaluk-share-group-lag",
-  "title": "Kafka Share Group — lag de Yaluk",
+  "uid": "sim-workers-share-group-lag",
+  "title": "Kafka Share Group — lag de HydraFlowSim",
   "tags": [
     "kafka",
     "share-groups",
-    "yaluk"
+    "hydraflowsim"
   ],
   "schemaVersion": 39,
   "version": 2,
@@ -30,10 +30,10 @@
         "name": "consumergroup",
         "label": "Share Group",
         "type": "constant",
-        "query": "yaluk-share-consumer",
+        "query": "sim-workers",
         "current": {
-          "text": "yaluk-share-consumer",
-          "value": "yaluk-share-consumer"
+          "text": "sim-workers",
+          "value": "sim-workers"
         },
         "hide": 0
       }
@@ -206,7 +206,7 @@
     },
     {
       "id": 7,
-      "title": "Réplicas de Yaluk",
+      "title": "Réplicas de sim-workers",
       "description": "Historial de réplicas deseadas por el Deployment, actuales y disponibles. Comparte el rango de tiempo con la gráfica de lag.",
       "type": "timeseries",
       "datasource": {
@@ -222,7 +222,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "max(kube_deployment_spec_replicas{namespace=\"yaluk\",deployment=\"yaluk\"})",
+          "expr": "max(kube_deployment_spec_replicas{namespace=\"hydraflowsim\",deployment=\"hydraflowsim\"})",
           "legendFormat": "Deseadas",
           "datasource": {
             "type": "prometheus",
@@ -232,7 +232,7 @@
         },
         {
           "refId": "B",
-          "expr": "max(kube_deployment_status_replicas{namespace=\"yaluk\",deployment=\"yaluk\"})",
+          "expr": "max(kube_deployment_status_replicas{namespace=\"hydraflowsim\",deployment=\"hydraflowsim\"})",
           "legendFormat": "Actuales",
           "datasource": {
             "type": "prometheus",
@@ -242,7 +242,7 @@
         },
         {
           "refId": "C",
-          "expr": "max(kube_deployment_status_replicas_available{namespace=\"yaluk\",deployment=\"yaluk\"})",
+          "expr": "max(kube_deployment_status_replicas_available{namespace=\"hydraflowsim\",deployment=\"hydraflowsim\"})",
           "legendFormat": "Disponibles",
           "datasource": {
             "type": "prometheus",

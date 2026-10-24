@@ -3,31 +3,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: yaluk
-  name: yaluk
-  namespace: yaluk
+    app: sim-workers
+  name: sim-workers
+  namespace: hydraflowsim
 spec:
-  # Replica count is managed by KEDA/HPA (see yaluk-scaledobject.yaml).
+  # Replica count is managed by KEDA/HPA (see sim-workers-scaledobject.yaml).
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: yaluk
+      app: sim-workers
   template:
     metadata:
       labels:
-        app: yaluk
+        app: sim-workers
     spec:
       terminationGracePeriodSeconds: 180
       containers:
-        - name: yaluk
+        - name: sim-workers
           # Build and push the worker image from your software source, then replace this placeholder.
-          image: registry.example.com/your-project/yaluk-worker:1.0.0
+          image: registry.example.com/your-project/sim-workers:1.0.0
           imagePullPolicy: Always
           command: ["/bin/sh"]
           args:
             - -c
             - >-
-              python3 /opt/yaluk/bin/main.pyc
+              python3 /opt/simulation/bin/main.pyc
           resources:
             requests:
               cpu: "0.5"
@@ -37,21 +37,21 @@ spec:
               memory: "1536Mi"
           env:
             - name: TPBIG_PATH
-              value: "/opt/yaluk/libatp/tpbig"
-            - name: YALUK_PATH
-              value: "/opt/yaluk/libatp"
+              value: "/opt/simulation/libatp/tpbig"
+            - name: SIMULATION_PATH
+              value: "/opt/simulation/libatp"
             - name: KAFKA_HOST
-              value: "kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092"
+              value: "kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
-              value: "yaluk.streaming.simulations"
+              value: "hydraflowsim.streaming.simulations"
             - name: RESULTS_TOPIC
-              value: "yaluk.streaming.simulation-results"
+              value: "hydraflowsim.streaming.simulation-results"
             - name: SIMULATION_STATUS_TOPIC
-              value: "yaluk.streaming.simulation-status"
+              value: "hydraflowsim.streaming.simulation-status"
             - name: CONSUMER_GROUP_ID
-              value: "yaluk-share-consumer"
+              value: "sim-workers"
             - name: POSTGRES_HOST
-              value: "postgres-pooler.yaluk.svc.cluster.local"
+              value: "postgres-pooler.hydraflowsim.svc.cluster.local"
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_DB
@@ -67,7 +67,7 @@ spec:
                   name: postgres-app
                   key: password
             - name: S3_ENDPOINT_URL
-              value: "http://rustfs.yaluk.svc.cluster.local:9000/"
+              value: "http://rustfs.hydraflowsim.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:

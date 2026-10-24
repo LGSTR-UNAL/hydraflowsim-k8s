@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: rustfs-bucket-init-v2
-  namespace: yaluk
+  namespace: hydraflowsim
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -20,14 +20,14 @@ spec:
               until aws s3api list-buckets --endpoint-url "$endpoint" --region us-east-1 >/dev/null 2>&1; do
                 sleep 5
               done
-              for bucket in yaluk-requests yaluk-resources yaluk-results; do
+              for bucket in hydraflowsim-requests hydraflowsim-resources hydraflowsim-results; do
                 if ! aws s3api head-bucket --bucket "$bucket" --endpoint-url "$endpoint" --region us-east-1 >/dev/null 2>&1; then
                   aws s3api create-bucket --bucket "$bucket" --endpoint-url "$endpoint" --region us-east-1
                 fi
               done
           env:
             - name: S3_ENDPOINT_URL
-              value: "http://rustfs.yaluk.svc.cluster.local:9000"
+              value: "http://rustfs.hydraflowsim.svc.cluster.local:9000"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:

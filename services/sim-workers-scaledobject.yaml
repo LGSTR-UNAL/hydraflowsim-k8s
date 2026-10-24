@@ -1,13 +1,13 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: yaluk-share-group-lag
-  namespace: yaluk
+  name: sim-workers-share-group-lag
+  namespace: hydraflowsim
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   scaleTargetRef:
-    name: yaluk
+    name: sim-workers
   pollingInterval: 30
   minReplicaCount: 1
   maxReplicaCount: 30
@@ -17,7 +17,7 @@ spec:
     behavior: currentReplicas
   advanced:
     horizontalPodAutoscalerConfig:
-      name: yaluk-share-group-lag
+      name: sim-workers-share-group-lag
       behavior:
         scaleUp:
           stabilizationWindowSeconds: 0
@@ -48,8 +48,8 @@ spec:
         # max deduplicates partitions during an exporter rolling update.
         query: >-
           sum(max by (consumergroup, topic, partition) (
-            kafka_sharegroup_lag{namespace="yaluk",consumergroup="yaluk-share-consumer",topic="yaluk.streaming.simulations"}
+            kafka_sharegroup_lag{namespace="hydraflowsim",consumergroup="sim-workers",topic="hydraflowsim.streaming.simulations"}
           ))
-          and on() (min(kafka_sharegroup_exporter_scrape_success{namespace="yaluk",consumergroup="yaluk-share-consumer"}) == 1)
-          and on() ((time() - min(kafka_sharegroup_exporter_last_success_timestamp_seconds{namespace="yaluk",consumergroup="yaluk-share-consumer"})) < 90)
-          and on() (min(kafka_sharegroup_lag_available{namespace="yaluk",consumergroup="yaluk-share-consumer",topic="yaluk.streaming.simulations"}) == 1)
+          and on() (min(kafka_sharegroup_exporter_scrape_success{namespace="hydraflowsim",consumergroup="sim-workers"}) == 1)
+          and on() ((time() - min(kafka_sharegroup_exporter_last_success_timestamp_seconds{namespace="hydraflowsim",consumergroup="sim-workers"})) < 90)
+          and on() (min(kafka_sharegroup_lag_available{namespace="hydraflowsim",consumergroup="sim-workers",topic="hydraflowsim.streaming.simulations"}) == 1)

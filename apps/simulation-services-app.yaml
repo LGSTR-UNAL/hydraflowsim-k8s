@@ -1,24 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: yaluk
+  name: simulation-services
   namespace: argocd
   # finalizers:
   # - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: yaluk
+    path: services
     repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s.git
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
-    namespace: yaluk
+    namespace: hydraflowsim
   ignoreDifferences:
     - group: apps
       kind: Deployment
-      name: yaluk
-      namespace: yaluk
+      name: sim-workers
+      namespace: hydraflowsim
       jsonPointers:
         - /spec/replicas
   syncPolicy:

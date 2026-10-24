@@ -16,7 +16,7 @@ spec:
       exclude: "**/Dockerfile"
   destination:
     server: https://kubernetes.default.svc
-    namespace: yaluk
+    namespace: hydraflowsim
   syncPolicy:
     automated: {}
     syncOptions:

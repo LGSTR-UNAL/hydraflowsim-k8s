@@ -3,24 +3,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: yaluk-server
-  name: yaluk-server
-  namespace: yaluk
+    app: sim-server
+  name: sim-server
+  namespace: hydraflowsim
 spec:
   replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: yaluk-server
+      app: sim-server
   template:
     metadata:
       labels:
-        app: yaluk-server
+        app: sim-server
     spec:
       containers:
-        - name: yaluk-server
+        - name: sim-server
           # Build and push the server image from your software source, then replace this placeholder.
-          image: registry.example.com/your-project/yaluk-server:1.0.0
+          image: registry.example.com/your-project/sim-server:1.0.0
           imagePullPolicy: Always
           ports:
             - name: yk-port
@@ -40,15 +40,15 @@ spec:
             ]
           env:
             - name: SOLVER_PATH
-              value: "/opt/yaluk/libatp/tpbig"
+              value: "/opt/simulation/libatp/tpbig"
             - name: ALL_REQUEST_TOPIC
-              value: "yaluk.streaming.all-simulations"
+              value: "hydraflowsim.streaming.all-simulations"
             - name: KAFKA_BOOTSTRAP_SERVERS
-              value: "kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092"
+              value: "kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092"
             - name: REQUEST_TOPIC
-              value: "yaluk.streaming.simulations"
+              value: "hydraflowsim.streaming.simulations"
             - name: S3_ENDPOINT_URL
-              value: "http://rustfs.yaluk.svc.cluster.local:9000/"
+              value: "http://rustfs.hydraflowsim.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -60,7 +60,7 @@ spec:
                   name: rustfs-credentials
                   key: RUSTFS_SECRET_KEY
             - name: DB_HOST
-              value: "postgres-pooler.yaluk.svc.cluster.local"
+              value: "postgres-pooler.hydraflowsim.svc.cluster.local"
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME

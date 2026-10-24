@@ -41,7 +41,7 @@ spec:
           enabled: false
   destination:
     server: https://kubernetes.default.svc
-    namespace: yaluk
+    namespace: hydraflowsim
   syncPolicy:
     automated: {}
     syncOptions:

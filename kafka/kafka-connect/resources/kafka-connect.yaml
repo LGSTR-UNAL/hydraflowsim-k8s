@@ -9,7 +9,7 @@ spec:
   image: registry.example.com/your-project/kafka-connect:4.2.0-jdbc10.9.4
   version: 4.2.0
   replicas: 2
-  bootstrapServers: kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092
+  bootstrapServers: kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092
   groupId: connect-cluster
   configStorageTopic: connect-cluster-configs
   offsetStorageTopic: connect-cluster-offsets

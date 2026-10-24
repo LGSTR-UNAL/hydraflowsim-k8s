@@ -5,11 +5,11 @@ resources:
   - share-group-exporter.yaml
 configMapGenerator:
   - name: kafka-share-group-exporter-code
-    namespace: yaluk
+    namespace: hydraflowsim
     files:
       - exporter.py=share-group-exporter/exporter.py
   - name: kafka-share-group-dashboard
-    namespace: yaluk
+    namespace: hydraflowsim
     files:
       - kafka-share-group.json=share-group-exporter/dashboard.json
     options:

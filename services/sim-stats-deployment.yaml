@@ -3,28 +3,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: yaluk-stats
-  name: yaluk-stats
-  namespace: yaluk
+    app: sim-stats
+  name: sim-stats
+  namespace: hydraflowsim
 spec:
   replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: yaluk-stats
+      app: sim-stats
   template:
     metadata:
       labels:
-        app: yaluk-stats
+        app: sim-stats
     spec:
       containers:
-        - name: yaluk-stats
+        - name: sim-stats
           # Build and push the statistics service image from your software source, then replace this placeholder.
-          image: registry.example.com/your-project/yaluk-stats:1.0.0
+          image: registry.example.com/your-project/sim-stats:1.0.0
           imagePullPolicy: Always
           env:
             - name: DB_HOST
-              value: "postgres-pooler.yaluk.svc.cluster.local"
+              value: "postgres-pooler.hydraflowsim.svc.cluster.local"
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME

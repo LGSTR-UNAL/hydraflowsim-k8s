@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: kafka-exporter
-  namespace: yaluk
+  namespace: hydraflowsim
   labels:
     release: kube-prom-stack
 spec:
@@ -11,7 +11,7 @@ spec:
       strimzi.io/kind: Kafka
   namespaceSelector:
     matchNames:
-      - yaluk
+      - hydraflowsim
   endpoints:
   - port: metrics
     honorLabels: true
