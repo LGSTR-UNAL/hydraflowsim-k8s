@@ -33,16 +33,6 @@ spec:
                 secretKeyRef:
                   name: postgres-app
                   key: password
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-app
-                  key: user
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-app
-                  key: password
           envFrom:
             - configMapRef:
                 name: hydraflowsim-runtime-config
