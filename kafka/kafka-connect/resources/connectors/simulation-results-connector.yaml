@@ -19,11 +19,6 @@ spec:
     connection.url: "jdbc:postgresql://postgres-pooler.hydraflowsim.svc.cluster.local:5432/app"
     connection.user: "${env:PG_USER}"
     connection.password: "${env:PG_PASSWORD}"
-    transforms: timestamp
-    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
-    transforms.timestamp.target.type: Timestamp
-    transforms.timestamp.field: fecha
-    transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
     batch.size: 300
     consumer.override.fetch.max.wait.ms: "10000"
     consumer.override.fetch.min.bytes: "1048576"

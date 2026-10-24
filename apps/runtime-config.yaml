@@ -22,4 +22,4 @@ data:
   CONNECT_TABLE_ALL_SIMULATIONS: "app.streaming.all-simulations"
   CONNECT_TABLE_SIMULATIONS: "app.streaming.simulation"
   CONNECT_TABLE_SIMULATION_RESULTS: "app.streaming.simulation-results"
-  CONNECT_TABLE_SIMULATION_STATUS: "app.streaming.all-simulations"
+  CONNECT_TABLE_SIMULATION_STATUS: "app.streaming.simulation-status"

@@ -22,10 +22,6 @@ spec:
     connection.url: "jdbc:postgresql://postgres-pooler.hydraflowsim.svc.cluster.local:5432/app"
     connection.user: "${env:PG_USER}"
     connection.password: "${env:PG_PASSWORD}"
-    transforms: timestamp, drop
-    transforms.timestamp.type: org.apache.kafka.connect.transforms.TimestampConverter$Value
+    transforms: drop
     transforms.drop.type: org.apache.kafka.connect.transforms.ReplaceField$Value
     transforms.drop.blacklist: delete_tmp
-    transforms.timestamp.target.type: Timestamp
-    transforms.timestamp.field: fecha
-    transforms.timestamp.format: yyyy-MM-dd HH:mm:ss.SSS
