@@ -9,6 +9,10 @@ Kubernetes manifests for deploying the simulation services and their supporting 
 - `services/sim-stats-deployment.yaml`: statistics service image built from its software source.
 - `kafka/kafka-connect/resources/kafka-connect.yaml`: Kafka Connect image built from `kafka/kafka-connect/resources/connectors/Dockerfile`.
 
+## Worker image contract
+
+The worker image must define its own `ENTRYPOINT` or `CMD` to start the worker service; the Kubernetes manifest does not override the image startup command. The image must include the solver runtime or make it available at the configured `SIMULATOR_EXECUTABLE` path. `SIMULATOR_HOME` identifies the directory containing solver files or supporting assets. Update these values in `services/sim-workers-deployment.yaml` to match the image. The worker implementation is responsible for invoking the solver with the request input and handling its outputs. Solver-specific command-line arguments belong to that worker implementation and are not fixed by this infrastructure repository.
+
 The `registry.example.com/your-project/...` values are examples and must be replaced before deployment. For a private registry, create the `reg-cred` image pull Secret in namespace `hydraflowsim` and provide credentials with access to all referenced images. If the images are public, remove the `imagePullSecrets` entries from the deployment manifests.
 
 For example, build and publish the included Kafka Connect image with: `docker build -f kafka/kafka-connect/resources/connectors/Dockerfile -t REGISTRY/PROJECT/kafka-connect:4.2.0-jdbc10.9.4 .`, followed by `docker push` for that tag. Build and push the other images using the Dockerfiles and instructions in their respective software repositories.

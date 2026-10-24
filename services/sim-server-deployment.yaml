@@ -39,8 +39,6 @@ spec:
               "1",
             ]
           env:
-            - name: SOLVER_PATH
-              value: "/opt/simulation/libatp/tpbig"
             - name: ALL_REQUEST_TOPIC
               value: "hydraflowsim.streaming.all-simulations"
             - name: KAFKA_BOOTSTRAP_SERVERS
