@@ -30,6 +30,26 @@ spec:
             secretName: postgres-credentials
     connectContainer:
       env:
+        - name: CONNECT_TABLE_ALL_SIMULATIONS
+          valueFrom:
+            configMapKeyRef:
+              name: hydraflowsim-runtime-config
+              key: CONNECT_TABLE_ALL_SIMULATIONS
+        - name: CONNECT_TABLE_SIMULATIONS
+          valueFrom:
+            configMapKeyRef:
+              name: hydraflowsim-runtime-config
+              key: CONNECT_TABLE_SIMULATIONS
+        - name: CONNECT_TABLE_SIMULATION_RESULTS
+          valueFrom:
+            configMapKeyRef:
+              name: hydraflowsim-runtime-config
+              key: CONNECT_TABLE_SIMULATION_RESULTS
+        - name: CONNECT_TABLE_SIMULATION_STATUS
+          valueFrom:
+            configMapKeyRef:
+              name: hydraflowsim-runtime-config
+              key: CONNECT_TABLE_SIMULATION_STATUS
         - name: PG_USER
           valueFrom:
             secretKeyRef:

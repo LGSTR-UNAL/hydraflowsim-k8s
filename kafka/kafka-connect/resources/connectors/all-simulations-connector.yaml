@@ -12,7 +12,7 @@ spec:
     enabled: true
   config:
     topics: hydraflowsim.streaming.all-simulations
-    table.name.format: app.streaming.all-simulations
+    table.name.format: "${env:CONNECT_TABLE_ALL_SIMULATIONS}"
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
     auto.evolve: "true"
