@@ -6,7 +6,6 @@ metadata:
 data:
   PORT: "8000"
   KAFKA_BOOTSTRAP_SERVERS: "kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092"
-  KAFKA_HOST: "kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092"
   ALL_REQUEST_TOPIC: "hydraflowsim.streaming.all-simulations"
   REQUEST_TOPIC: "hydraflowsim.streaming.simulations"
   RESULTS_TOPIC: "hydraflowsim.streaming.simulation-results"
