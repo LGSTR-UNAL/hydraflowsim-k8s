@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     path: postgres
-    repoURL: git@github.com:LGSTR-UNAL/yaluk-k8s.git
+    repoURL: git@github.com:LGSTR-UNAL/hydraflowsim-k8s.git
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
