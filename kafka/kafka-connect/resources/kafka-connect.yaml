@@ -23,11 +23,6 @@ spec:
     status.storage.replication.factor: -1
     connector.client.config.override.policy: All
   template:
-    pod:
-      volumes:
-        - name: confluent-jdbc-sink-connector-config
-          secret:
-            secretName: postgres-credentials
     connectContainer:
       env:
         - name: CONNECT_TABLE_ALL_SIMULATIONS
