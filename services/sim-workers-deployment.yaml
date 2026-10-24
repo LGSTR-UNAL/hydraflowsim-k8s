@@ -35,22 +35,16 @@ spec:
               value: "/opt/simulator/bin/simulator"
             - name: SIMULATOR_HOME
               value: "/opt/simulator"
-            - name: KAFKA_HOST
-              value: "kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092"
-            - name: REQUEST_TOPIC
-              value: "hydraflowsim.streaming.simulations"
-            - name: RESULTS_TOPIC
-              value: "hydraflowsim.streaming.simulation-results"
-            - name: SIMULATION_STATUS_TOPIC
-              value: "hydraflowsim.streaming.simulation-status"
-            - name: CONSUMER_GROUP_ID
-              value: "sim-workers"
-            - name: POSTGRES_HOST
-              value: "postgres-pooler.hydraflowsim.svc.cluster.local"
-            - name: POSTGRES_PORT
-              value: "5432"
-            - name: POSTGRES_DB
-              value: "app"
+            - name: S3_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-credentials
+                  key: RUSTFS_ACCESS_KEY
+            - name: S3_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-credentials
+                  key: RUSTFS_SECRET_KEY
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -61,8 +55,16 @@ spec:
                 secretKeyRef:
                   name: postgres-app
                   key: password
-            - name: S3_ENDPOINT_URL
-              value: "http://rustfs.hydraflowsim.svc.cluster.local:9000/"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -75,6 +77,9 @@ spec:
                   key: RUSTFS_SECRET_KEY
             - name: OMP_NUM_THREADS
               value: "1"
+          envFrom:
+            - configMapRef:
+                name: hydraflowsim-runtime-config
 
       imagePullSecrets:
         - name: reg-cred

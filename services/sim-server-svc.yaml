@@ -10,7 +10,7 @@ spec:
   selector:
     app: sim-server
   ports:
-    - name: sim-server
+    - name: http
       protocol: TCP
       port: 8000
-      targetPort: yk-port
+      targetPort: http

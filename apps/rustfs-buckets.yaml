@@ -20,14 +20,12 @@ spec:
               until aws s3api list-buckets --endpoint-url "$endpoint" --region us-east-1 >/dev/null 2>&1; do
                 sleep 5
               done
-              for bucket in hydraflowsim-requests hydraflowsim-resources hydraflowsim-results; do
+              for bucket in "$S3_REQUESTS_BUCKET" "$S3_RESOURCES_BUCKET" "$S3_RESULTS_BUCKET"; do
                 if ! aws s3api head-bucket --bucket "$bucket" --endpoint-url "$endpoint" --region us-east-1 >/dev/null 2>&1; then
                   aws s3api create-bucket --bucket "$bucket" --endpoint-url "$endpoint" --region us-east-1
                 fi
               done
           env:
-            - name: S3_ENDPOINT_URL
-              value: "http://rustfs.hydraflowsim.svc.cluster.local:9000"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -40,3 +38,6 @@ spec:
                   key: RUSTFS_SECRET_KEY
             - name: AWS_DEFAULT_REGION
               value: us-east-1
+          envFrom:
+            - configMapRef:
+                name: hydraflowsim-runtime-config

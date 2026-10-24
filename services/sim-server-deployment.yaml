@@ -23,30 +23,10 @@ spec:
           image: registry.example.com/your-project/sim-server:1.0.0
           imagePullPolicy: Always
           ports:
-            - name: yk-port
+            - name: http
               containerPort: 8000
               protocol: TCP
-          workingDir: /opt/server
-          command: ["uvicorn"]
-          args:
-            [
-              "main:app",
-              "--host",
-              "0.0.0.0",
-              "--port",
-              "8000",
-              "--workers",
-              "1",
-            ]
           env:
-            - name: ALL_REQUEST_TOPIC
-              value: "hydraflowsim.streaming.all-simulations"
-            - name: KAFKA_BOOTSTRAP_SERVERS
-              value: "kafka-kafka-bootstrap.hydraflowsim.svc.cluster.local:9092"
-            - name: REQUEST_TOPIC
-              value: "hydraflowsim.streaming.simulations"
-            - name: S3_ENDPOINT_URL
-              value: "http://rustfs.hydraflowsim.svc.cluster.local:9000/"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -57,12 +37,16 @@ spec:
                 secretKeyRef:
                   name: rustfs-credentials
                   key: RUSTFS_SECRET_KEY
-            - name: DB_HOST
-              value: "postgres-pooler.hydraflowsim.svc.cluster.local"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              value: "app"
+            - name: S3_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-credentials
+                  key: RUSTFS_ACCESS_KEY
+            - name: S3_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-credentials
+                  key: RUSTFS_SECRET_KEY
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -73,5 +57,30 @@ spec:
                 secretKeyRef:
                   name: postgres-app
                   key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: hydraflowsim-runtime-config
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
       imagePullSecrets:
         - name: reg-cred

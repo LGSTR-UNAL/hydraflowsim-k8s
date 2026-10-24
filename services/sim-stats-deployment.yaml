@@ -23,12 +23,6 @@ spec:
           image: registry.example.com/your-project/sim-stats:1.0.0
           imagePullPolicy: Always
           env:
-            - name: DB_HOST
-              value: "postgres-pooler.hydraflowsim.svc.cluster.local"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              value: "app"
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
@@ -39,5 +33,18 @@ spec:
                 secretKeyRef:
                   name: postgres-app
                   key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: hydraflowsim-runtime-config
       imagePullSecrets:
         - name: reg-cred
