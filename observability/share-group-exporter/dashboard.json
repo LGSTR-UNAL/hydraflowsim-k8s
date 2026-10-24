@@ -1,0 +1,352 @@
+{
+  "uid": "yaluk-share-group-lag",
+  "title": "Kafka Share Group — lag de Yaluk",
+  "tags": [
+    "kafka",
+    "share-groups",
+    "yaluk"
+  ],
+  "schemaVersion": 39,
+  "version": 2,
+  "editable": true,
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "description": "Lag de Share Groups reportado por Kafka 4.2 mediante DescribeShareGroupOffsets. No usa offsets de consumer groups convencionales. Incluye registros pendientes y en procesamiento. Una consulta fallida elimina las muestras de lag; no se convierte en cero.",
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "label": "Prometheus",
+        "type": "datasource",
+        "query": "prometheus",
+        "refresh": 1,
+        "options": []
+      },
+      {
+        "name": "consumergroup",
+        "label": "Share Group",
+        "type": "constant",
+        "query": "yaluk-share-consumer",
+        "current": {
+          "text": "yaluk-share-consumer",
+          "value": "yaluk-share-consumer"
+        },
+        "hide": 0
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Mensajes pendientes (lag total)",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(max by (consumergroup, topic, partition) (kafka_sharegroup_lag{consumergroup=\"$consumergroup\"}))",
+          "legendFormat": "{{topic}} / {{partition}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Consulta a Kafka correcta (1 = sí)",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 8,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max(kafka_sharegroup_exporter_scrape_success{consumergroup=\"$consumergroup\"})",
+          "legendFormat": "{{topic}} / {{partition}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Antigüedad de la consulta correcta",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 8,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "time() - max(kafka_sharegroup_exporter_last_success_timestamp_seconds{consumergroup=\"$consumergroup\"})",
+          "legendFormat": "{{topic}} / {{partition}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "min": 0,
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Lag por topic",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (topic) (max by (consumergroup, topic, partition) (kafka_sharegroup_lag{consumergroup=\"$consumergroup\"}))",
+          "legendFormat": "{{topic}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 7,
+      "title": "Réplicas de Yaluk",
+      "description": "Historial de réplicas deseadas por el Deployment, actuales y disponibles. Comparte el rango de tiempo con la gráfica de lag.",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 5,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max(kube_deployment_spec_replicas{namespace=\"yaluk\",deployment=\"yaluk\"})",
+          "legendFormat": "Deseadas",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "range": true
+        },
+        {
+          "refId": "B",
+          "expr": "max(kube_deployment_status_replicas{namespace=\"yaluk\",deployment=\"yaluk\"})",
+          "legendFormat": "Actuales",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "max(kube_deployment_status_replicas_available{namespace=\"yaluk\",deployment=\"yaluk\"})",
+          "legendFormat": "Disponibles",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "noValue": "Sin datos",
+          "custom": {
+            "lineInterpolation": "stepAfter",
+            "axisSoftMax": 30
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Lag por partición",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 24,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (consumergroup, topic, partition) (kafka_sharegroup_lag{consumergroup=\"$consumergroup\"})",
+          "legendFormat": "{{topic}} / {{partition}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 6,
+      "title": "Lag disponible (1 = sí, 0 = Kafka no lo devuelve)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 23,
+        "w": 24,
+        "h": 7
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "min by (consumergroup, topic, partition) (kafka_sharegroup_lag_available{consumergroup=\"$consumergroup\"})",
+          "legendFormat": "{{topic}} / {{partition}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {}
+    }
+  ]
+}

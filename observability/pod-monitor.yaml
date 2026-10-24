@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: kafka-metrics
+  namespace: yaluk
+  labels:
+    release: kube-prom-stack
+spec:
+  selector:
+    matchLabels:
+      strimzi.io/cluster: kafka
+      strimzi.io/kind: Kafka
+  namespaceSelector:
+    matchNames:
+      - yaluk
+  podMetricsEndpoints:
+    - port: tcp-prometheus
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_label_strimzi_io_cluster]
+          targetLabel: strimzi_io_cluster

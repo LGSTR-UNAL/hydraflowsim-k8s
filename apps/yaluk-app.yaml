@@ -14,3 +14,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: yaluk
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: yaluk
+      namespace: yaluk
+      jsonPointers:
+        - /spec/replicas
+  syncPolicy:
+    syncOptions:
+      - RespectIgnoreDifferences=true

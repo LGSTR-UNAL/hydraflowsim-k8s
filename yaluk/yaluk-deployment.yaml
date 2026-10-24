@@ -7,7 +7,7 @@ metadata:
   name: yaluk
   namespace: yaluk
 spec:
-  replicas: 30
+  # Replica count is managed by KEDA/HPA (see yaluk-scaledobject.yaml).
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -17,6 +17,7 @@ spec:
       labels:
         app: yaluk
     spec:
+      terminationGracePeriodSeconds: 180
       containers:
         - name: yaluk
           # Build and push the worker image from your software source, then replace this placeholder.
@@ -48,7 +49,7 @@ spec:
             - name: SIMULATION_STATUS_TOPIC
               value: "yaluk.streaming.simulation-status"
             - name: CONSUMER_GROUP_ID
-              value: "yaluk"
+              value: "yaluk-share-consumer"
             - name: POSTGRES_HOST
               value: "postgres-pooler.yaluk.svc.cluster.local"
             - name: POSTGRES_PORT

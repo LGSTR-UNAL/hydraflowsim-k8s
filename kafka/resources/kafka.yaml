@@ -30,6 +30,13 @@ spec:
       transaction.state.log.min.isr: 2
       default.replication.factor: 2
       min.insync.replicas: 2
+      share.coordinator.state.topic.replication.factor: 2
+      share.coordinator.state.topic.min.isr: 2
+      group.share.record.lock.duration.ms: 400000
+      group.share.max.record.lock.duration.ms: 600000
+      group.share.partition.max.record.locks: 100
+      group.share.max.size: 100
+      group.share.delivery.count.limit: 10
       # inter.broker.protocol.version fuera: en KRaft se maneja via metadataVersion
     metricsConfig:
       type: jmxPrometheusExporter

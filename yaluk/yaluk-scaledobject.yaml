@@ -1,0 +1,55 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: yaluk-share-group-lag
+  namespace: yaluk
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  scaleTargetRef:
+    name: yaluk
+  pollingInterval: 30
+  minReplicaCount: 1
+  maxReplicaCount: 30
+  fallback:
+    failureThreshold: 3
+    replicas: 1
+    behavior: currentReplicas
+  advanced:
+    horizontalPodAutoscalerConfig:
+      name: yaluk-share-group-lag
+      behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          selectPolicy: Max
+          policies:
+            - type: Percent
+              value: 100
+              periodSeconds: 30
+            - type: Pods
+              value: 5
+              periodSeconds: 30
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+            - type: Pods
+              value: 5
+              periodSeconds: 60
+  triggers:
+    - type: prometheus
+      name: share-group-lag
+      metricType: AverageValue
+      useCachedMetrics: true
+      metadata:
+        serverAddress: http://kube-prom-stack-kube-prome-prometheus.observability.svc.cluster.local:9090
+        threshold: "50"
+        ignoreNullValues: "false"
+        # Never substitute zero for failed, unavailable or stale observations.
+        # max deduplicates partitions during an exporter rolling update.
+        query: >-
+          sum(max by (consumergroup, topic, partition) (
+            kafka_sharegroup_lag{namespace="yaluk",consumergroup="yaluk-share-consumer",topic="yaluk.streaming.simulations"}
+          ))
+          and on() (min(kafka_sharegroup_exporter_scrape_success{namespace="yaluk",consumergroup="yaluk-share-consumer"}) == 1)
+          and on() ((time() - min(kafka_sharegroup_exporter_last_success_timestamp_seconds{namespace="yaluk",consumergroup="yaluk-share-consumer"})) < 90)
+          and on() (min(kafka_sharegroup_lag_available{namespace="yaluk",consumergroup="yaluk-share-consumer",topic="yaluk.streaming.simulations"}) == 1)

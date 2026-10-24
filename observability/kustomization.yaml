@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - pod-monitor.yaml
+  - share-group-exporter.yaml
+configMapGenerator:
+  - name: kafka-share-group-exporter-code
+    namespace: yaluk
+    files:
+      - exporter.py=share-group-exporter/exporter.py
+  - name: kafka-share-group-dashboard
+    namespace: yaluk
+    files:
+      - kafka-share-group.json=share-group-exporter/dashboard.json
+    options:
+      disableNameSuffixHash: true
+      labels:
+        grafana_dashboard: "1"

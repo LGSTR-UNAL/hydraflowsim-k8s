@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-share-group-exporter
+  namespace: yaluk
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: kafka-share-group-exporter
+  template:
+    metadata:
+      labels:
+        app: kafka-share-group-exporter
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: exporter
+          image: quay.io/strimzi/kafka:1.1.0-kafka-4.2.0
+          command: [python3, /opt/share-group-exporter/exporter.py]
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: kafka-kafka-bootstrap.yaluk.svc.cluster.local:9092
+            - name: SHARE_GROUP
+              value: yaluk-share-consumer
+            - name: POLL_INTERVAL_SECONDS
+              value: "30"
+            - name: QUERY_TIMEOUT_SECONDS
+              value: "20"
+            - name: KAFKA_HEAP_OPTS
+              value: -Xms32m -Xmx128m
+            - name: PYTHONDONTWRITEBYTECODE
+              value: "1"
+          ports:
+            - name: metrics
+              containerPort: 9405
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: code
+              mountPath: /opt/share-group-exporter
+              readOnly: true
+      volumes:
+        - name: code
+          configMap:
+            name: kafka-share-group-exporter-code
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: kafka-share-group-exporter
+  namespace: yaluk
+  labels:
+    release: kube-prom-stack
+spec:
+  namespaceSelector:
+    matchNames: [yaluk]
+  selector:
+    matchLabels:
+      app: kafka-share-group-exporter
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
