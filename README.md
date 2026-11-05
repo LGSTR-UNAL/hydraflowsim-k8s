@@ -79,3 +79,12 @@ promtool test rules /tmp/hydraflowsim-autoscaling.yaml
 
 The PromQL fixture generator requires PyYAML. The exporter tests cover Kafka
 output parsing, unavailable/stale metrics, timeouts and Prometheus label escaping.
+
+
+## User-defined database structure
+
+A [manual PostgreSQL Job](jobs/postgres-sql/README.md) runs a user-provided
+`schema.sql` to create application schemas and tables using the existing database
+and credentials. It is not part of Argo CD synchronization; edit the SQL and run
+`kubectl apply -k jobs/postgres-sql` explicitly. No additional infrastructure is
+created, and the default SQL creates no application objects.

@@ -1,0 +1,76 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-user-schema
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 600
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app: postgres-user-schema
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: psql
+          # Pin a reviewed tag/digest for production; match the server major version.
+          image: postgres:18
+          imagePullPolicy: IfNotPresent
+          command: [psql]
+          args: ["-X", "--no-password", "--set=ON_ERROR_STOP=1", "--file=/sql/schema.sql"]
+          env:
+            - name: PGHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: hydraflowsim-runtime-config
+                  key: DB_HOST
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: hydraflowsim-runtime-config
+                  key: DB_PORT
+            - name: PGDATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: hydraflowsim-runtime-config
+                  key: DB_NAME
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: user
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-app
+                  key: password
+            - name: PGCONNECT_TIMEOUT
+              value: "15"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: "1"
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: sql
+              mountPath: /sql
+              readOnly: true
+      volumes:
+        - name: sql
+          configMap:
+            name: user-schema-sql
