@@ -15,6 +15,7 @@ spec:
   offsetStorageTopic: connect-cluster-offsets
   statusStorageTopic: connect-cluster-status
   config:
+    key.converter: org.apache.kafka.connect.storage.StringConverter
     config.providers: env
     config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
     auto.create.topics.enable: "true"

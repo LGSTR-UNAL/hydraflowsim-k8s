@@ -16,6 +16,9 @@ spec:
     value.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: "true"
     auto.evolve: "true"
+    insert.mode: "upsert"
+    pk.mode: "record_value"
+    pk.fields: "simulation_id,measurement"
     connection.url: "jdbc:postgresql://postgres-pooler.hydraflowsim.svc.cluster.local:5432/app"
     connection.user: "${env:PG_USER}"
     connection.password: "${env:PG_PASSWORD}"

@@ -17,7 +17,7 @@ spec:
       labels:
         app: sim-workers
     spec:
-      terminationGracePeriodSeconds: 180
+      terminationGracePeriodSeconds: 600
       containers:
         - name: sim-workers
           # Build and push the worker image from your software source, then replace this placeholder.

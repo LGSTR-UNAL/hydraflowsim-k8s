@@ -15,7 +15,7 @@ The worker image must define its own `ENTRYPOINT` or `CMD` to start the worker s
 
 ## Worker duration, message locks and shutdown
 
-Set `group.share.record.lock.duration.ms` and `group.share.max.record.lock.duration.ms` in `kafka/resources/kafka.yaml`, and `terminationGracePeriodSeconds` in `services/sim-workers-deployment.yaml`, using measured simulation durations. Use average durations to size routine operation, and include the longest or otherwise extreme cases plus time for cleanup and shutdown. If a share record lock expires while a simulation is still running, Kafka may deliver that request to another worker. If the termination grace period is shorter than an in-flight simulation, Kubernetes may kill the worker before it finishes. The current values (`400000`, `600000`, and `180`) must be evaluated against the workload; they are not universal durations.
+Set `group.share.record.lock.duration.ms` and `group.share.max.record.lock.duration.ms` in `kafka/resources/kafka.yaml`, and `terminationGracePeriodSeconds` in `services/sim-workers-deployment.yaml`, using measured simulation durations. Use average durations to size routine operation, and include the longest or otherwise extreme cases plus time for cleanup and shutdown. If a share record lock expires while a simulation is still running, Kafka may deliver that request to another worker. If the termination grace period is shorter than an in-flight simulation, Kubernetes may kill the worker before it finishes. The current values (`400000`, `600000`, and `600`) must be evaluated against the workload; they are not universal durations.
 
 ## Service interfaces
 
@@ -36,3 +36,46 @@ For example, build and publish the included Kafka Connect image with: `docker bu
 ## Object storage
 
 The `rustfs-secret-generator` Job creates `rustfs-credentials` in namespace `hydraflowsim` when it is absent, using random credentials stored only in the Kubernetes Secret. The RustFS application and services read `RUSTFS_ACCESS_KEY` and `RUSTFS_SECRET_KEY` from it. A CronJob checks every five minutes that the Secret still exists. The bucket initialization job creates `hydraflowsim-requests`, `hydraflowsim-resources`, and `hydraflowsim-results`.
+
+
+## Result retries and database migration
+
+The existing result sink now uses JDBC upserts with key
+`(simulation_id, measurement)`, matching the peak-result payload. Before syncing
+this connector in an existing installation, follow
+[postgres/migrations/README.md](postgres/migrations/README.md) to add the unique
+index without deleting records or resetting Kafka offsets. The migration stops
+if duplicate keys require review. This prevents duplicate persisted peaks on
+redelivery; it does not provide exactly-once simulator execution.
+
+Time-series simulators need a different key that also identifies each sample.
+Update the existing connector, its table schema and unique index together;
+never apply the default peak key to time-series measurements.
+
+## Monitoring and simulator changes
+
+The existing Grafana dashboard includes desired/current/available worker replicas,
+total worker CPU and memory, and CPU and memory per worker. Selectors target the
+`sim-workers` Deployment and container in namespace `hydraflowsim`. CPU/memory
+panels require Prometheus to scrape kubelet/cAdvisor metrics; replica panels need
+kube-state-metrics. Missing measurements remain missing, rather than becoming zero.
+The exporter and KEDA already reject failed, unavailable or stale lag observations.
+
+To use a different simulator, update the existing server and worker images,
+runtime ConfigMap, application schemas/connectors, and the existing ScaledObject
+limits for that workload. Reuse Kafka, Kafka Connect, PostgreSQL, object storage,
+exporter, dashboard and services. Do not install a second infrastructure stack or
+copy a second set of simulator-specific Deployments. Experimental campaign Jobs,
+cluster addresses, credentials and historical image tags from `yaluk-k8s-ops/dev`
+are intentionally not copied into these generic manifests.
+
+## Local verification
+
+```sh
+python3 -m unittest discover -s tests -v
+python3 tests/generate_autoscaling_promql_test.py > /tmp/hydraflowsim-autoscaling.yaml
+promtool test rules /tmp/hydraflowsim-autoscaling.yaml
+```
+
+The PromQL fixture generator requires PyYAML. The exporter tests cover Kafka
+output parsing, unavailable/stale metrics, timeouts and Prometheus label escaping.
