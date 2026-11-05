@@ -88,3 +88,32 @@ A [manual PostgreSQL Job](jobs/postgres-sql/README.md) runs a user-provided
 and credentials. It is not part of Argo CD synchronization; edit the SQL and run
 `kubectl apply -k jobs/postgres-sql` explicitly. No additional infrastructure is
 created, and the default SQL creates no application objects.
+
+
+## Share-group exporter inputs and endpoints
+
+The exporter runs `kafka-share-groups.sh` from `/opt/kafka/bin` and requires a
+Kafka runtime with that command, Java, and Python. The supplied Strimzi image
+provides them; no third-party Python packages are needed by the exporter.
+The broker must support share groups and the selected group must exist.
+
+| Environment variable | Required | Default | Meaning |
+| --- | --- | --- | --- |
+| `BOOTSTRAP_SERVERS` | yes | none | Kafka broker addresses |
+| `SHARE_GROUP` | yes | none | Share group to query |
+| `POLL_INTERVAL_SECONDS` | no | `30` | Delay between query starts, in seconds |
+| `QUERY_TIMEOUT_SECONDS` | no | `20` | Maximum duration of each Kafka CLI query, in seconds |
+
+Both timing values must be positive integers. HTTP binds to `0.0.0.0:9405`:
+`GET /metrics` serves Prometheus text and `GET /healthz` reports process liveness.
+Health does not assert successful Kafka communication. Failed or malformed queries
+clear the cached rows; observations older than the polling interval plus query
+timeout do not expose lag. Kafka's unavailable `-` values are not converted to
+zero. `START-OFFSET` is exported separately and is never used as the lag.
+
+Metrics: `kafka_sharegroup_lag`, `kafka_sharegroup_start_offset`,
+`kafka_sharegroup_lag_available`, `kafka_sharegroup_exporter_scrape_success`,
+`kafka_sharegroup_exporter_last_success_timestamp_seconds`, and
+`kafka_sharegroup_exporter_errors_total`. All carry `consumergroup`; partition
+metrics also carry `topic` and `partition`. The exporter does not add a namespace
+label itself; Prometheus supplies it when scraping the Kubernetes workload.

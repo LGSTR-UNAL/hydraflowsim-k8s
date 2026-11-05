@@ -9,6 +9,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
 def parse_offsets(output, group):
+    """Parse Kafka partition offsets; preserve unavailable offsets and lag as None."""
     rows = []
     header_seen = False
     for line in output.splitlines():
@@ -31,10 +32,13 @@ def parse_offsets(output, group):
 
 
 def label(value):
+    """Escape a label value using Prometheus text exposition rules."""
     return str(value).replace("\\", "\\\\").replace("\n", "\\n").replace('"', '\\"')
 
 
 class Collector:
+    """Poll Kafka and expose a thread-safe snapshot of lag and query health."""
+
     def __init__(self, group, bootstrap, interval=30, timeout=20):
         self.group = group
         self.bootstrap = bootstrap
@@ -47,11 +51,22 @@ class Collector:
         self.errors = 0
 
     def collect(self):
+        """Replace cached offsets after a successful query; clear them on failure."""
         try:
             result = subprocess.run(
-                ["/opt/kafka/bin/kafka-share-groups.sh", "--bootstrap-server",
-                 self.bootstrap, "--describe", "--group", self.group, "--offsets"],
-                capture_output=True, text=True, timeout=self.timeout, check=True,
+                [
+                    "/opt/kafka/bin/kafka-share-groups.sh",
+                    "--bootstrap-server",
+                    self.bootstrap,
+                    "--describe",
+                    "--group",
+                    self.group,
+                    "--offsets",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=self.timeout,
+                check=True,
             )
             rows = parse_offsets(result.stdout, self.group)
             with self.lock:
@@ -66,50 +81,106 @@ class Collector:
                 self.errors += 1
 
     def run(self):
+        """Poll repeatedly, accounting for query time in the polling interval."""
         while True:
             started = time.monotonic()
             self.collect()
             time.sleep(max(0, self.interval - (time.monotonic() - started)))
 
     def metrics(self):
+        """Render metrics, omitting lag when the last observation is stale or failed."""
         with self.lock:
             rows = list(self.rows)
             last_success = self.last_success
-            success = self.success and time.time() - last_success <= self.interval + self.timeout
+            success = (
+                self.success
+                and time.time() - last_success <= self.interval + self.timeout
+            )
             errors = self.errors
         group_labels = 'consumergroup="' + label(self.group) + '"'
         definitions = [
-            ("kafka_sharegroup_exporter_scrape_success", "gauge", "Whether the last Kafka query succeeded."),
-            ("kafka_sharegroup_exporter_last_success_timestamp_seconds", "gauge", "Unix time of the last successful Kafka query."),
-            ("kafka_sharegroup_exporter_errors_total", "counter", "Failed Kafka offset queries."),
-            ("kafka_sharegroup_lag", "gauge", "Share partition lag reported by Kafka; includes unfinished delivery."),
-            ("kafka_sharegroup_start_offset", "gauge", "Share partition start offset reported by Kafka."),
-            ("kafka_sharegroup_lag_available", "gauge", "Whether Kafka returned a lag value for this partition."),
+            (
+                "kafka_sharegroup_exporter_scrape_success",
+                "gauge",
+                "Whether the last Kafka query succeeded.",
+            ),
+            (
+                "kafka_sharegroup_exporter_last_success_timestamp_seconds",
+                "gauge",
+                "Unix time of the last successful Kafka query.",
+            ),
+            (
+                "kafka_sharegroup_exporter_errors_total",
+                "counter",
+                "Failed Kafka offset queries.",
+            ),
+            (
+                "kafka_sharegroup_lag",
+                "gauge",
+                "Share partition lag reported by Kafka; includes unfinished delivery.",
+            ),
+            (
+                "kafka_sharegroup_start_offset",
+                "gauge",
+                "Share partition start offset reported by Kafka.",
+            ),
+            (
+                "kafka_sharegroup_lag_available",
+                "gauge",
+                "Whether Kafka returned a lag value for this partition.",
+            ),
         ]
         lines = []
         for name, kind, help_text in definitions:
-            lines.extend(["# HELP " + name + " " + help_text, "# TYPE " + name + " " + kind])
+            lines.extend(
+                ["# HELP " + name + " " + help_text, "# TYPE " + name + " " + kind]
+            )
         for name, value in [
             ("scrape_success", int(success)),
             ("last_success_timestamp_seconds", last_success),
             ("errors_total", errors),
         ]:
-            lines.append("kafka_sharegroup_exporter_" + name + "{" + group_labels + "} " + str(value))
+            lines.append(
+                "kafka_sharegroup_exporter_"
+                + name
+                + "{"
+                + group_labels
+                + "} "
+                + str(value)
+            )
         if success:
             for topic, partition, offset, lag in rows:
-                labels = group_labels + ',topic="' + label(topic) + '",partition="' + str(partition) + '"'
-                lines.append("kafka_sharegroup_lag_available{" + labels + "} " + str(int(lag is not None)))
+                labels = (
+                    group_labels
+                    + ',topic="'
+                    + label(topic)
+                    + '",partition="'
+                    + str(partition)
+                    + '"'
+                )
+                lines.append(
+                    "kafka_sharegroup_lag_available{"
+                    + labels
+                    + "} "
+                    + str(int(lag is not None))
+                )
                 if lag is not None:
                     lines.append("kafka_sharegroup_lag{" + labels + "} " + str(lag))
                 if offset is not None:
-                    lines.append("kafka_sharegroup_start_offset{" + labels + "} " + str(offset))
+                    lines.append(
+                        "kafka_sharegroup_start_offset{" + labels + "} " + str(offset)
+                    )
         return "\n".join(lines) + "\n"
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    """Start the background collector and serve metrics and liveness on port 9405."""
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s"
+    )
     collector = Collector(
-        os.environ["SHARE_GROUP"], os.environ["BOOTSTRAP_SERVERS"],
+        os.environ["SHARE_GROUP"],
+        os.environ["BOOTSTRAP_SERVERS"],
         interval=int(os.environ.get("POLL_INTERVAL_SECONDS", "30")),
         timeout=int(os.environ.get("QUERY_TIMEOUT_SECONDS", "20")),
     )
